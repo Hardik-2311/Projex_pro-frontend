@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-function GoalModal({ isOpen, onClose, onGoalCreate, taskId }) {
+function GoalModal({ isOpen, onClose, onGoalCreate, taskId ,creator }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    creator: "",
+    creator: creator,
     due_date: "",
     finished: false,
     task_id: taskId,

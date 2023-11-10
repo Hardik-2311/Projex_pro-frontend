@@ -6,12 +6,28 @@ import {
   deleteTaskAsync,
   createTaskAsync,
 } from "../Features/taskSlice";
+import { fetchUsersAsync } from "../Features/userSlice";
 import { MdDelete } from "react-icons/md";
 import TaskModal from "../Modals/TaskModal";
 function TaskList(props) {
   const projectId = props.projectId;
-  console.log(projectId)
   const dispatch = useDispatch();
+
+  const users = useSelector((state) => state.user.data);
+  console.log(users);
+  const statususer = useSelector((state) => state.user.status);
+  const activeUsers = users.filter((user) => user.is_active === true);
+  let creator
+  activeUsers.map((activeuser) => {
+    creator = activeuser.username;
+    console.log(creator);
+    return creator;
+  });
+  useEffect(() => {
+    if (statususer === "idle") {
+      dispatch(fetchUsersAsync());
+    }
+  }, [statususer, dispatch]);
   const projects = useSelector((state) => state.project.data);
   const tasks = useSelector((state) => state.task.data);
   const status = useSelector((state) => state.task.status);
@@ -20,15 +36,14 @@ function TaskList(props) {
     (formData) => {
       const taskDataWithProjectId = {
         ...formData,
-        
-        project:projectId
- 
+
+        project: projectId,
       };
-      console.log(projectId)
+      console.log(projectId);
       dispatch(createTaskAsync(taskDataWithProjectId));
       console.log("Creating task with data:", taskDataWithProjectId);
     },
-    [dispatch,projectId]
+    [dispatch, projectId]
   );
   const handleTaskDelete = useCallback(
     async (taskId) => {
@@ -64,7 +79,7 @@ function TaskList(props) {
                     </p>
                   </li>
                   <div className="mt-2">
-                    <GoalList taskId={task.id} />
+                    <GoalList taskId={task.id} creator={creator}/>
                   </div>
                 </div>
               ) : (
@@ -82,7 +97,6 @@ function TaskList(props) {
         }
         onClick={() => {
           setIsTaskModalOpen(true);
-          
         }}
       >
         Add a task
@@ -92,6 +106,7 @@ function TaskList(props) {
         onClose={() => setIsTaskModalOpen(false)}
         onTaskCreate={handleTaskCreate}
         project={projectId}
+        creator={creator}
       />
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-const ModalForm = ({ onSubmit, onClose }) => {
+const ModalForm = ({ onSubmit, onClose, creator, users }) => {
   const [formData, setFormData] = useState({
     project_name: "",
-    creator: "",
+    creator: creator,
     members: "",
     description: "",
   });
@@ -20,7 +20,7 @@ const ModalForm = ({ onSubmit, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>Project_name</label>
+      <label>Project Name</label>
       <input
         type="text"
         name="project_name"
@@ -34,15 +34,22 @@ const ModalForm = ({ onSubmit, onClose }) => {
         name="creator"
         value={formData.creator}
         onChange={handleInputChange}
+        disabled // Disabling creator input assuming it should not be edited
       />
 
       <label>Members</label>
-      <input
-        type="text"
+      <select
         name="members"
         value={formData.members}
         onChange={handleInputChange}
-      />
+      >
+        <option value="">Select a member</option>
+        {users.map((user) => (
+          <option key={user.id} value={user.username}>
+            {user.username}
+          </option>
+        ))}
+      </select>
 
       <label>Description</label>
       <textarea

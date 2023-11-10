@@ -6,12 +6,14 @@ import {
   deleteGoalAsync,
   createGoalAsync,
 } from "../Features/goalSlice";
+
 import { MdDelete } from "react-icons/md";
 import GoalModal from "../Modals/GoalModal";
 import Modal from "../Components/Modal";
 
 function GoalList(props) {
   const taskId = props.taskId;
+  const creator=props.creator;
   const dispatch = useDispatch();
   const goals = useSelector((state) => state.goal.data);
   const status = useSelector((state) => state.goal.status);
@@ -79,12 +81,13 @@ function GoalList(props) {
 
       {/* GoalModal */}
 
-      <Modal isOpen={isgoalModalOpen} >
+      <Modal isOpen={isgoalModalOpen}>
         <GoalModal
           onClose={() => setIsgoalModalOpen(false)}
           className="flex flex-col"
           onGoalCreate={handleGoalCreate}
           taskId={taskId}
+          creator={creator}
         />
       </Modal>
     </div>

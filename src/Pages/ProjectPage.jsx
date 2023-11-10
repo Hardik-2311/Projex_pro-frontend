@@ -26,7 +26,14 @@ function ProjectPage({ onProjectClick }) {
   );
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const users = useSelector((state) => state.user.data);
+  const activeUsers = users.filter((user) => user.is_active === true);
+  let creator;
+  activeUsers.map((activeuser) => {
+    creator = activeuser.username;
+    console.log(creator);
+    return creator;
+  });
   const toggleDarkMode = (checked) => {
     setTheme(colorTheme);
     setDarkSide(checked);
@@ -63,12 +70,12 @@ function ProjectPage({ onProjectClick }) {
 
   const handleEditProject = (project) => {
     setEditingProject(project);
-    openModal(); 
+    openModal();
   };
 
   const handleUpdateProject = (formData) => {
-    console.log(editingProject)
-    console.log(formData)
+    console.log(editingProject);
+    console.log(formData);
     dispatch(editProjectAsync(editingProject.id, formData));
     closeModal();
   };
@@ -81,13 +88,12 @@ function ProjectPage({ onProjectClick }) {
       <div className="flex flex-col items-start p-4 gap-4 ">
         <div className="">
           <ul className="flex flex-col space-y-3">
-
             {projects.map((project) => (
               <li
                 key={project.id}
                 onClick={() => {
                   setSelectedProject(project.id);
-                  onProjectClick(project.id)
+                  onProjectClick(project.id);
                 }}
                 className={`text-xl flex flex-row gap-4 items-center font-bold cursor-pointer`}
               >
@@ -100,11 +106,10 @@ function ProjectPage({ onProjectClick }) {
                       ? " text-[#635fc7] underline "
                       : ""
                   }`}
-                  onClick={()=>{
-                    setSelectedProject(project.id)
+                  onClick={() => {
+                    setSelectedProject(project.id);
                   }}
                 >
-                 
                   {project.project_name}
                 </div>{" "}
                 <div className="flex">
@@ -161,6 +166,8 @@ function ProjectPage({ onProjectClick }) {
             }
             onClose={closeModal}
             initialData={editingProject}
+            creator={creator}
+            users={users}
           />
         </Modal>
       </div>

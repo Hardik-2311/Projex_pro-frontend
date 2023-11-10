@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import Modal from "../Components/Modal";
 import TaskForm from "../Components/TaskForm";
 
-function TaskModal({ isOpen, onClose, onTaskCreate,project}) {
+function TaskModal({ isOpen, onClose, onTaskCreate,project ,creator}) {
   console.log(project)
   const [formData, setFormData] = useState({
     Task_name: "",
     description: "",
-    creator: "",
+    creator: creator,
     project:project,
   });
 
