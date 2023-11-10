@@ -1,69 +1,22 @@
-// api/projectsApi.js
-import { createAsyncThunk } from "@reduxjs/toolkit";
+// api/projectApi.js
 import axios from "axios";
 
 const axiosConfig = {
   withCredentials: true,
 };
 
-export const fetchProjects = createAsyncThunk(
-  "project/fetchProjects",
-  async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/projects/",
-        axiosConfig
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const fetchProjectsApi = () => {
+  return axios.get("http://127.0.0.1:8000/projects/", axiosConfig);
+};
 
-export const createProject = createAsyncThunk(
-  "project/createProject",
-  async (newProject) => {
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/projects/",
-        newProject,
-        axiosConfig
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const createProjectApi = (newProject) => {
+  return axios.post("http://127.0.0.1:8000/projects/", newProject, axiosConfig);
+};
 
-export const editProject = createAsyncThunk(
-  "project/editProject",
-  async ({ projectId, newData }) => {
-    try {
-      const response = await axios.put(
-        `http://127.0.0.1:8000/projects/${projectId}/`,
-        newData,
-        axiosConfig
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const deleteProjectApi = (projectId) => {
+  return axios.delete(`http://127.0.0.1:8000/projects/${projectId}/`, axiosConfig);
+};
 
-export const deleteProject = createAsyncThunk(
-  "project/deleteProject",
-  async (projectId) => {
-    try {
-      await axios.delete(
-        `http://127.0.0.1:8000/projects/${projectId}/`,
-        axiosConfig
-      );
-      return projectId;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const editProjectApi = (projectId, newData) => {
+  return axios.put(`http://127.0.0.1:8000/projects/${projectId}/`, newData, axiosConfig);
+};

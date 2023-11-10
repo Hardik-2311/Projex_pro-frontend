@@ -1,6 +1,6 @@
-// goalSlice.js
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchGoal } from "../Api/GoalApi"; // Import from the api folder
+// features/goal/goalSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchGoalsApi, createGoalApi, deleteGoalApi, editGoalApi } from "../Api/GoalApi";
 
 const initialState = {
   data: [],
@@ -8,41 +8,57 @@ const initialState = {
   error: null,
 };
 
+export const fetchGoalsAsync = createAsyncThunk("goal/fetchGoals", async () => {
+  const response = await fetchGoalsApi();
+  return response.data;
+});
+
+export const createGoalAsync = createAsyncThunk("goal/createGoal", async (newGoal) => {
+  const response = await createGoalApi(newGoal);
+  return response.data;
+});
+
+export const deleteGoalAsync = createAsyncThunk("goal/deleteGoal", async (goalId) => {
+  await deleteGoalApi(goalId);
+  return goalId;
+});
+
+export const editGoalAsync = createAsyncThunk("goal/editGoal", async ({ goalId, newData }) => {
+  const response = await editGoalApi(goalId, newData);
+  return response.data;
+});
+
 const goalSlice = createSlice({
   name: "goal",
   initialState,
-  reducers: {
-    createGoal: (state, action) => {
-      const newGoal = action.payload;
-      state.data.push(newGoal);
-    },
-    editGoal: (state, action) => {
-      const { goalId, newData } = action.payload;
-      const goal = state.data.find((g) => g.id === goalId);
-      if (goal) {
-        Object.assign(goal, newData);
-      }
-    },
-    deleteGoal: (state, action) => {
-      const goalIdToDelete = action.payload;
-      state.data = state.data.filter((g) => g.id !== goalIdToDelete);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGoal.pending, (state) => {
+      .addCase(fetchGoalsAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchGoal.fulfilled, (state, action) => {
+      .addCase(fetchGoalsAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchGoal.rejected, (state, action) => {
+      .addCase(fetchGoalsAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createGoalAsync.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteGoalAsync.fulfilled, (state, action) => {
+        state.data = state.data.filter((goal) => goal.id !== action.payload);
+      })
+      .addCase(editGoalAsync.fulfilled, (state, action) => {
+        // Update the goal in the state
+        const updatedGoalIndex = state.data.findIndex((goal) => goal.id === action.payload.id);
+        if (updatedGoalIndex !== -1) {
+          state.data[updatedGoalIndex] = action.payload;
+        }
       });
   },
 });
 
-export const { createGoal, editGoal, deleteGoal } = goalSlice.actions;
 export default goalSlice.reducer;

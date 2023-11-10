@@ -1,6 +1,6 @@
-// taskSlice.js
-import { createSlice} from "@reduxjs/toolkit";
-import { fetchTasks } from "../Api/TaskApi"; // Import from the api folder
+// features/task/taskSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchTasksApi, createTaskApi, deleteTaskApi, editTaskApi } from "../Api/TaskApi";
 
 const initialState = {
   data: [],
@@ -8,41 +8,57 @@ const initialState = {
   error: null,
 };
 
+export const fetchTasksAsync = createAsyncThunk("task/fetchTasks", async () => {
+  const response = await fetchTasksApi();
+  return response.data;
+});
+
+export const createTaskAsync = createAsyncThunk("task/createTask", async (newTask) => {
+  const response = await createTaskApi(newTask);
+  return response.data;
+});
+
+export const deleteTaskAsync = createAsyncThunk("task/deleteTask", async (taskId) => {
+  await deleteTaskApi(taskId);
+  return taskId;
+});
+
+export const editTaskAsync = createAsyncThunk("task/editTask", async ({ taskId, newData }) => {
+  const response = await editTaskApi(taskId, newData);
+  return response.data;
+});
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
-  reducers: {
-    createTask: (state, action) => {
-      const newTask = action.payload;
-      state.data.push(newTask);
-    },
-    editTask: (state, action) => {
-      const { taskId, newData } = action.payload;
-      const task = state.data.find((t) => t.id === taskId);
-      if (task) {
-        Object.assign(task, newData);
-      }
-    },
-    deleteTask: (state, action) => {
-      const taskIdToDelete = action.payload;
-      state.data = state.data.filter((t) => t.id !== taskIdToDelete);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
+      .addCase(fetchTasksAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchTasksAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchTasksAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createTaskAsync.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteTaskAsync.fulfilled, (state, action) => {
+        state.data = state.data.filter((task) => task.id !== action.payload);
+      })
+      .addCase(editTaskAsync.fulfilled, (state, action) => {
+        // Update the task in the state
+        const updatedTaskIndex = state.data.findIndex((task) => task.id === action.payload.id);
+        if (updatedTaskIndex !== -1) {
+          state.data[updatedTaskIndex] = action.payload;
+        }
       });
   },
 });
 
-export const { createTask, editTask, deleteTask } = taskSlice.actions;
 export default taskSlice.reducer;

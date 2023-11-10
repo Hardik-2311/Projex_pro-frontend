@@ -1,6 +1,6 @@
-// feedbackSlice.js
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchFeedbacks } from "../Api/FeedbackApi";
+// features/feedback/feedbackSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchFeedbacksApi, createFeedbackApi, deleteFeedbackApi, editFeedbackApi } from "../Api/FeedbackApi";
 
 const initialState = {
   data: [],
@@ -8,41 +8,57 @@ const initialState = {
   error: null,
 };
 
+export const fetchFeedbacksAsync = createAsyncThunk("feedback/fetchFeedbacks", async () => {
+  const response = await fetchFeedbacksApi();
+  return response.data;
+});
+
+export const createFeedbackAsync = createAsyncThunk("feedback/createFeedback", async (newFeedback) => {
+  const response = await createFeedbackApi(newFeedback);
+  return response.data;
+});
+
+export const deleteFeedbackAsync = createAsyncThunk("feedback/deleteFeedback", async (feedbackId) => {
+  await deleteFeedbackApi(feedbackId);
+  return feedbackId;
+});
+
+export const editFeedbackAsync = createAsyncThunk("feedback/editFeedback", async ({ feedbackId, newData }) => {
+  const response = await editFeedbackApi(feedbackId, newData);
+  return response.data;
+});
+
 const feedbackSlice = createSlice({
   name: "feedback",
   initialState,
-  reducers: {
-    createFeedback: (state, action) => {
-      const newFeedback = action.payload;
-      state.data.push(newFeedback);
-    },
-    editFeedback: (state, action) => {
-      const { feedbackId, newData } = action.payload;
-      const feedback = state.data.find((f) => f.id === feedbackId);
-      if (feedback) {
-        Object.assign(feedback, newData);
-      }
-    },
-    deleteFeedback: (state, action) => {
-      const feedbackIdToDelete = action.payload;
-      state.data = state.data.filter((f) => f.id !== feedbackIdToDelete);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFeedbacks.pending, (state) => {
+      .addCase(fetchFeedbacksAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchFeedbacks.fulfilled, (state, action) => {
+      .addCase(fetchFeedbacksAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchFeedbacks.rejected, (state, action) => {
+      .addCase(fetchFeedbacksAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createFeedbackAsync.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteFeedbackAsync.fulfilled, (state, action) => {
+        state.data = state.data.filter((feedback) => feedback.id !== action.payload);
+      })
+      .addCase(editFeedbackAsync.fulfilled, (state, action) => {
+        // Update the feedback in the state
+        const updatedFeedbackIndex = state.data.findIndex((feedback) => feedback.id === action.payload.id);
+        if (updatedFeedbackIndex !== -1) {
+          state.data[updatedFeedbackIndex] = action.payload;
+        }
       });
   },
 });
 
-export const { createFeedback, editFeedback, deleteFeedback } = feedbackSlice.actions;
 export default feedbackSlice.reducer;

@@ -1,6 +1,6 @@
-// projectSlice.js
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchProjects } from "../Api/ProjectApi"; // Import from the api folder
+// features/project/projectSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchProjectsApi, createProjectApi, deleteProjectApi, editProjectApi } from "../Api/ProjectApi";
 
 const initialState = {
   data: [],
@@ -8,41 +8,57 @@ const initialState = {
   error: null,
 };
 
+export const fetchProjectsAsync = createAsyncThunk("project/fetchProjects", async () => {
+  const response = await fetchProjectsApi();
+  return response.data;
+});
+
+export const createProjectAsync = createAsyncThunk("project/createProject", async (newProject) => {
+  const response = await createProjectApi(newProject);
+  return response.data;
+});
+
+export const deleteProjectAsync = createAsyncThunk("project/deleteProject", async (projectId) => {
+  await deleteProjectApi(projectId);
+  return projectId;
+});
+
+export const editProjectAsync = createAsyncThunk("project/editProject", async ({ projectId, newData }) => {
+  const response = await editProjectApi(projectId, newData);
+  return response.data;
+});
+
 const projectSlice = createSlice({
   name: "project",
   initialState,
-  reducers: {
-    createProject: (state, action) => {
-      const newProject = action.payload;
-      state.data.push(newProject);
-    },
-    editProject: (state, action) => {
-      const { projectId, newData } = action.payload;
-      const project = state.data.find((p) => p.id === projectId);
-      if (project) {
-        Object.assign(project, newData);
-      }
-    },
-    deleteProject: (state, action) => {
-      const projectIdToDelete = action.payload;
-      state.data = state.data.filter((p) => p.id !== projectIdToDelete);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProjects.pending, (state) => {
+      .addCase(fetchProjectsAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchProjects.fulfilled, (state, action) => {
+      .addCase(fetchProjectsAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchProjects.rejected, (state, action) => {
+      .addCase(fetchProjectsAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createProjectAsync.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteProjectAsync.fulfilled, (state, action) => {
+        state.data = state.data.filter((project) => project.id !== action.payload);
+      })
+      .addCase(editProjectAsync.fulfilled, (state, action) => {
+        // Update the project in the state
+        const updatedProjectIndex = state.data.findIndex((project) => project.id === action.payload.id);
+        if (updatedProjectIndex !== -1) {
+          state.data[updatedProjectIndex] = action.payload;
+        }
       });
   },
 });
 
-export const { createProject, editProject, deleteProject } = projectSlice.actions;
 export default projectSlice.reducer;

@@ -1,6 +1,6 @@
-// userSlice.js
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers } from "../Api/UserApi"; // Import from the api folder
+// features/user/userSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchUsersApi, createUserApi, deleteUserApi, editUserApi } from "../Api/UserApi";
 
 const initialState = {
   data: [],
@@ -8,41 +8,57 @@ const initialState = {
   error: null,
 };
 
+export const fetchUsersAsync = createAsyncThunk("user/fetchUsers", async () => {
+  const response = await fetchUsersApi();
+  return response.data;
+});
+
+export const createUserAsync = createAsyncThunk("user/createUser", async (newUser) => {
+  const response = await createUserApi(newUser);
+  return response.data;
+});
+
+export const deleteUserAsync = createAsyncThunk("user/deleteUser", async (userId) => {
+  await deleteUserApi(userId);
+  return userId;
+});
+
+export const editUserAsync = createAsyncThunk("user/editUser", async ({ userId, newData }) => {
+  const response = await editUserApi(userId, newData);
+  return response.data;
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    createUser: (state, action) => {
-      const newUser = action.payload;
-      state.data.push(newUser);
-    },
-    editUser: (state, action) => {
-      const { userId, newData } = action.payload;
-      const user = state.data.find((u) => u.id === userId);
-      if (user) {
-        Object.assign(user, newData);
-      }
-    },
-    deleteUser: (state, action) => {
-      const userIdToDelete = action.payload;
-      state.data = state.data.filter((u) => u.id !== userIdToDelete);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUsers.pending, (state) => {
+      .addCase(fetchUsersAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
+      .addCase(fetchUsersAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchUsers.rejected, (state, action) => {
+      .addCase(fetchUsersAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createUserAsync.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteUserAsync.fulfilled, (state, action) => {
+        state.data = state.data.filter((user) => user.id !== action.payload);
+      })
+      .addCase(editUserAsync.fulfilled, (state, action) => {
+        // Update the user in the state
+        const updatedUserIndex = state.data.findIndex((user) => user.id === action.payload.id);
+        if (updatedUserIndex !== -1) {
+          state.data[updatedUserIndex] = action.payload;
+        }
       });
   },
 });
 
-export const { createUser, editUser, deleteUser } = userSlice.actions;
 export default userSlice.reducer;

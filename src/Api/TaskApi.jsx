@@ -1,63 +1,22 @@
-// api/tasksApi.js
-import { createAsyncThunk } from "@reduxjs/toolkit";
+// api/taskApi.js
 import axios from "axios";
 
 const axiosConfig = {
   withCredentials: true,
 };
 
-export const fetchTasks = createAsyncThunk("task/fetchTasks", async () => {
-  try {
-    const response = await axios.get(
-      "http://127.0.0.1:8000/tasks/",
-      axiosConfig
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-});
+export const fetchTasksApi = () => {
+  return axios.get("http://127.0.0.1:8000/tasks/", axiosConfig);
+};
 
-export const createTask = createAsyncThunk(
-  "task/createTask",
-  async (newTask) => {
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/tasks/",
-        newTask,
-        axiosConfig
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const createTaskApi = (newTask) => {
+  return axios.post("http://127.0.0.1:8000/tasks/", newTask, axiosConfig);
+};
 
-export const editTask = createAsyncThunk(
-  "task/editTask",
-  async ({ taskId, newData }) => {
-    try {
-      const response = await axios.put(
-        `http://127.0.0.1:8000/tasks/${taskId}/`,
-        newData,
-        axiosConfig
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const deleteTaskApi = (taskId) => {
+  return axios.delete(`http://127.0.0.1:8000/tasks/${taskId}/`, axiosConfig);
+};
 
-export const deleteTask = createAsyncThunk(
-  "task/deleteTask",
-  async (taskId) => {
-    try {
-      await axios.delete(`http://127.0.0.1:8000/tasks/${taskId}/`, axiosConfig);
-      return taskId;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+export const editTaskApi = (taskId, newData) => {
+  return axios.put(`http://127.0.0.1:8000/tasks/${taskId}/`, newData, axiosConfig);
+};
