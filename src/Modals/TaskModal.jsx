@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
   const [formData, setFormData] = useState({
-    task_name: "",
+    Task_name: "",
     description: "",
     creator: creator,
     project:project
@@ -53,8 +53,8 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
             </label>
             <input
               type="text"
-              name="task_name"
-              value={formData.task_name}
+              name="Task_name"
+              value={formData.Task_name}
               onChange={handleInputChange}
               className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
             />

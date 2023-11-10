@@ -35,7 +35,6 @@ function TaskList(props) {
     (formData) => {
       const taskDataWithProjectId = {
         ...formData,
-
         project: projectId,
       };
       dispatch(createTaskAsync(taskDataWithProjectId));
@@ -44,7 +43,6 @@ function TaskList(props) {
   );
   const handleTaskDelete = useCallback(
     async (taskId) => {
-      // Assuming your API call is handled in the 'deletetask' action
       dispatch(deleteTaskAsync(taskId));
     },
     [dispatch]
