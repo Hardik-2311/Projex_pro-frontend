@@ -1,6 +1,6 @@
 // goalSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchGoals } from "./api/goalsApi"; // Import from the api folder
+import { fetchGoal } from "../Api/GoalApi"; // Import from the api folder
 
 const initialState = {
   data: [],
@@ -30,14 +30,14 @@ const goalSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGoals.pending, (state) => {
+      .addCase(fetchGoal.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchGoals.fulfilled, (state, action) => {
+      .addCase(fetchGoal.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchGoals.rejected, (state, action) => {
+      .addCase(fetchGoal.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

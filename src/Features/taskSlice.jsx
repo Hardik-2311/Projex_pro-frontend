@@ -1,45 +1,48 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchTasks } from "../Api/TaskApi";
-const tasksSlice = createSlice({
-    name: 'tasks',
-    initialState,
-    reducers: {
-      // Reducer for creating a new task
-      createtask: (state, action) => {
-        const newtask = action.payload;
-        state.data.push(newtask);
-      },
-    //   edit task
-      edittask: (state, action) => {
-        const { taskId, newData } = action.payload;
-        const task = state.data.find((p) => p.id === taskId);
-        if (task) {
-          Object.assign(task, newData);
-        }
-      },
-  
-      //delete task
-      deletetask: (state, action) => {
-        const taskIdToDelete = action.payload;
-        state.data = state.data.filter((p) => p.id !== taskIdToDelete);
-      },
+// taskSlice.js
+import { createSlice} from "@reduxjs/toolkit";
+import { fetchTasks } from "../Api/TaskApi"; // Import from the api folder
+
+const initialState = {
+  data: [],
+  status: "idle",
+  error: null,
+};
+
+const taskSlice = createSlice({
+  name: "task",
+  initialState,
+  reducers: {
+    createTask: (state, action) => {
+      const newTask = action.payload;
+      state.data.push(newTask);
     },
-    extraReducers: (builder) => {
-      builder
-        .addCase(fetchTasks.pending, (state) => {
-          state.status = 'loading';
-        })
-        .addCase(fetchTasks.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          state.data = action.payload;
-        })
-        .addCase(fetchTasks.rejected, (state, action) => {
-          state.status = 'failed';
-          state.error = action.error.message;
-        });
+    editTask: (state, action) => {
+      const { taskId, newData } = action.payload;
+      const task = state.data.find((t) => t.id === taskId);
+      if (task) {
+        Object.assign(task, newData);
+      }
     },
-  });
-  
-  export const { createtask, edittask, deletetask } = tasksSlice.actions;
-  
-  export default tasksSlice.reducer;
+    deleteTask: (state, action) => {
+      const taskIdToDelete = action.payload;
+      state.data = state.data.filter((t) => t.id !== taskIdToDelete);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTasks.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+      })
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const { createTask, editTask, deleteTask } = taskSlice.actions;
+export default taskSlice.reducer;
