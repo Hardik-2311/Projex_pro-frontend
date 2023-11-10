@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProjectsAsync , deleteProjectAsync} from "../Features/projectSlice";
+// ProjectPage.jsx
+import React, { useState ,useEffect } from "react";
+import { useDispatch , useSelector} from "react-redux";
+import { fetchProjectsAsync, deleteProjectAsync ,createProjectAsync } from "../Features/projectSlice";
 import { LuProjector } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import useDarkMode from "../Hooks/useDark";
 import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
-
-
+import Modal from "../Components/Modal";
+import ModalForm from "../Modals/ModalForm";
 function ProjectPage() {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
@@ -15,12 +16,25 @@ function ProjectPage() {
   const error = useSelector((state) => state.project.error);
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(colorTheme === "light" ? true : false);
-
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleDarkMode = (checked) => {
     setTheme(colorTheme);
     setDarkSide(checked);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCreateProject = (formData) => {
+    dispatch(createProjectAsync(formData))
+    console.log("Creating project with data:", formData);
   };
 
   useEffect(() => {
@@ -70,20 +84,10 @@ function ProjectPage() {
           </ul>
         </div>
         <div>
-          <button
-            className="hidden md:block py-2 px-3 text-lg font-bold dark:text-white"
-            onClick={() => {
-              
-            }}
-          >
+          <button className="hidden md:block py-2 px-3 text-lg font-bold dark:text-white" onClick={openModal}>
             + Create New Project
           </button>
-          <button
-            onClick={() => {
-              
-            }}
-            className="button py-1 px-3 md:hidden"
-          >
+          <button onClick={openModal} className="button py-1 px-3 md:hidden">
             +
           </button>
         </div>
@@ -104,9 +108,12 @@ function ProjectPage() {
           </Switch>
           <BsFillMoonFill />
         </div>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <ModalForm onSubmit={handleCreateProject} onClose={closeModal} />
+        </Modal>
       </div>
     </div>
   );
 }
 
-export default ProjectPage
+export default ProjectPage;
