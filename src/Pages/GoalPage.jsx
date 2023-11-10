@@ -1,7 +1,14 @@
-import React, { useEffect } from "react";
+// GoalList.jsx
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchGoalsAsync, deleteGoalAsync } from "../Features/goalSlice";
+import {
+  fetchGoalsAsync,
+  deleteGoalAsync,
+  createGoalAsync,
+} from "../Features/goalSlice";
 import { MdDelete } from "react-icons/md";
+import GoalModal from "../Modals/GoalModal";
+import Modal from "../Components/Modal";
 
 function GoalList(props) {
   const taskId = props.taskId;
@@ -10,8 +17,14 @@ function GoalList(props) {
   const status = useSelector((state) => state.goal.status);
   const error = useSelector((state) => state.goal.error);
 
+  const [isgoalModalOpen, setIsgoalModalOpen] = useState(false);
+
+  const handleGoalCreate = (formData) => {
+    dispatch(createGoalAsync(formData));
+  };
+
   const handleGoalDelete = (goalId) => {
-    dispatch(deleteGoalAsync(goalId)); // Assuming deletegoal action handles API call
+    dispatch(deleteGoalAsync(goalId));
   };
 
   useEffect(() => {
@@ -32,11 +45,11 @@ function GoalList(props) {
     <div className="flex flex-col items-center">
       <div>
         <ul className="flex flex-col">
-          {goals.map((goal) => {
-            return taskId === goal.task_id ? (
+          {goals.map((goal) =>
+            taskId === goal.task_id ? (
               <div
                 key={goal.id}
-                className="w-[280px] bg-white  dark:bg-[#2b2c37] shadow-[#364e7e1a] rounded-lg mx-auto my-4 py-6 px-3 shadow-lg cursor-pointer"
+                className="w-[280px] bg-white dark:bg-[#2b2c37] shadow-[#364e7e1a] rounded-lg mx-auto my-4 py-6 px-3 shadow-lg cursor-pointer"
               >
                 <li>
                   <div className="flex items-center justify-between">
@@ -54,13 +67,26 @@ function GoalList(props) {
               </div>
             ) : (
               <li key={goal.id} className="hidden"></li>
-            );
-          })}
+            )
+          )}
         </ul>
       </div>
       <div>
-        <button className="button">Add Goal</button>
+        <button className="button" onClick={() => setIsgoalModalOpen(true)}>
+          Add Goal
+        </button>
       </div>
+
+      {/* GoalModal */}
+
+      <Modal isOpen={isgoalModalOpen} >
+        <GoalModal
+          onClose={() => setIsgoalModalOpen(false)}
+          className="flex flex-col"
+          onGoalCreate={handleGoalCreate}
+          taskId={taskId}
+        />
+      </Modal>
     </div>
   );
 }
