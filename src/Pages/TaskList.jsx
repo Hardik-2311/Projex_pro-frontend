@@ -86,7 +86,7 @@ function TaskList(props) {
       </div>
       <div
         className={
-          projects.length === 0
+          projectId === null || projects.length===0
             ? "hidden"
             : 'className=" h-[100vh] flex justify-center items-center font-bold text-2xl hover:text-[#635FC7] transition duration-300 cursor-pointer bg-gray-200  dark:bg-[#20212c]  scrollbar-hide mb-2   mx-5 min-w-[280px] text-[#828FA3] rounded-lg"'
         }
