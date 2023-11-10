@@ -1,7 +1,13 @@
 // ProjectPage.jsx
-import React, { useState ,useEffect } from "react";
-import { useDispatch , useSelector} from "react-redux";
-import { fetchProjectsAsync, deleteProjectAsync ,createProjectAsync } from "../Features/projectSlice";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProjectsAsync,
+  deleteProjectAsync,
+  createProjectAsync,
+  editProjectAsync,
+} from "../Features/projectSlice";
+import { MdEdit } from "react-icons/md";
 import { LuProjector } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import useDarkMode from "../Hooks/useDark";
@@ -9,13 +15,15 @@ import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
 import ModalForm from "../Modals/ModalForm";
-function ProjectPage() {
+function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const status = useSelector((state) => state.project.status);
   const error = useSelector((state) => state.project.error);
   const [colorTheme, setTheme] = useDarkMode();
-  const [darkSide, setDarkSide] = useState(colorTheme === "light" ? true : false);
+  const [darkSide, setDarkSide] = useState(
+    colorTheme === "light" ? true : false
+  );
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,7 +41,7 @@ function ProjectPage() {
   };
 
   const handleCreateProject = (formData) => {
-    dispatch(createProjectAsync(formData))
+    dispatch(createProjectAsync(formData));
     console.log("Creating project with data:", formData);
   };
 
@@ -51,6 +59,20 @@ function ProjectPage() {
     }
   };
 
+  const [editingProject, setEditingProject] = useState(null);
+
+  const handleEditProject = (project) => {
+    setEditingProject(project);
+    openModal(); 
+  };
+
+  const handleUpdateProject = (formData) => {
+    console.log(editingProject)
+    console.log(formData)
+    dispatch(editProjectAsync(editingProject.id, formData));
+    closeModal();
+  };
+
   return (
     <div>
       <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
@@ -59,32 +81,56 @@ function ProjectPage() {
       <div className="flex flex-col items-start p-4 gap-4 ">
         <div className="">
           <ul className="flex flex-col space-y-3">
+
             {projects.map((project) => (
               <li
                 key={project.id}
                 onClick={() => {
                   setSelectedProject(project.id);
+                  onProjectClick(project.id)
                 }}
-                className={`text-xl flex flex-row gap-4 items-center font-bold cursor-pointer ${
-                  selectedProject === project.id ? "underline" : ""
-                }`}
+                className={`text-xl flex flex-row gap-4 items-center font-bold cursor-pointer`}
               >
-                <LuProjector />{" "}
-                <div className="text-black dark:text-white dark:hover:text-[#635fc7]">
+                <div>
+                  <LuProjector />
+                </div>
+                <div
+                  className={` text-black dark:text-white dark:hover:text-[#635fc7] ${
+                    selectedProject === project.id
+                      ? " text-[#635fc7] underline "
+                      : ""
+                  }`}
+                  onClick={()=>{
+                    setSelectedProject(project.id)
+                  }}
+                >
+                 
                   {project.project_name}
                 </div>{" "}
-                <MdDelete
-                  className="hover:text-[#635fc7]"
-                  onClick={() => {
-                    handleDeleteProject(project.id);
-                  }}
-                />
+                <div className="flex">
+                  <MdEdit
+                    className="hover:text-[#635fc7]"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditProject(project);
+                    }}
+                  />
+                  <MdDelete
+                    className="hover:text-[#635fc7]"
+                    onClick={() => {
+                      handleDeleteProject(project.id);
+                    }}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <button className="hidden md:block py-2 px-3 text-lg font-bold dark:text-white" onClick={openModal}>
+          <button
+            className="hidden md:block py-2 px-3 text-lg font-bold dark:text-white"
+            onClick={openModal}
+          >
             + Create New Project
           </button>
           <button onClick={openModal} className="button py-1 px-3 md:hidden">
@@ -109,7 +155,13 @@ function ProjectPage() {
           <BsFillMoonFill />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <ModalForm onSubmit={handleCreateProject} onClose={closeModal} />
+          <ModalForm
+            onSubmit={
+              editingProject ? handleUpdateProject : handleCreateProject
+            }
+            onClose={closeModal}
+            initialData={editingProject}
+          />
         </Modal>
       </div>
     </div>

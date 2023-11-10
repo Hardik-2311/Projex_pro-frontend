@@ -1,16 +1,35 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import GoalList from "./GoalPage";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTasksAsync, deleteTaskAsync } from "../Features/taskSlice";
+import {
+  fetchTasksAsync,
+  deleteTaskAsync,
+  createTaskAsync,
+} from "../Features/taskSlice";
 import { MdDelete } from "react-icons/md";
-
+import TaskModal from "../Modals/TaskModal";
 function TaskList(props) {
   const projectId = props.projectId;
+  console.log(projectId)
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const tasks = useSelector((state) => state.task.data);
   const status = useSelector((state) => state.task.status);
-
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const handleTaskCreate = useCallback(
+    (formData) => {
+      const taskDataWithProjectId = {
+        ...formData,
+        
+        project:projectId
+ 
+      };
+      console.log(projectId)
+      dispatch(createTaskAsync(taskDataWithProjectId));
+      console.log("Creating task with data:", taskDataWithProjectId);
+    },
+    [dispatch,projectId]
+  );
   const handleTaskDelete = useCallback(
     async (taskId) => {
       // Assuming your API call is handled in the 'deletetask' action
@@ -18,7 +37,6 @@ function TaskList(props) {
     },
     [dispatch]
   );
-
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchTasksAsync());
@@ -62,10 +80,19 @@ function TaskList(props) {
             ? "hidden"
             : 'className=" h-[100vh] flex justify-center items-center font-bold text-2xl hover:text-[#635FC7] transition duration-300 cursor-pointer bg-gray-200  dark:bg-[#20212c]  scrollbar-hide mb-2   mx-5 min-w-[280px] text-[#828FA3] rounded-lg"'
         }
-        
+        onClick={() => {
+          setIsTaskModalOpen(true);
+          
+        }}
       >
         Add a task
       </div>
+      <TaskModal
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        onTaskCreate={handleTaskCreate}
+        project={projectId}
+      />
     </div>
   );
 }

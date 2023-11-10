@@ -5,7 +5,6 @@ import { MdDelete } from "react-icons/md";
 
 function GoalList(props) {
   const taskId = props.taskId;
-  console.log(taskId)
   const dispatch = useDispatch();
   const goals = useSelector((state) => state.goal.data);
   const status = useSelector((state) => state.goal.status);
@@ -30,7 +29,7 @@ function GoalList(props) {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div>
         <ul className="flex flex-col">
           {goals.map((goal) => {
@@ -59,9 +58,9 @@ function GoalList(props) {
           })}
         </ul>
       </div>
-      {/* <button onClick={} className="button">
-        Add Goal
-      </button> */}
+      <div>
+        <button className="button">Add Goal</button>
+      </div>
     </div>
   );
 }

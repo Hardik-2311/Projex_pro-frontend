@@ -18,5 +18,6 @@ export const deleteProjectApi = (projectId) => {
 };
 
 export const editProjectApi = (projectId, newData) => {
+  console.log(newData)
   return axios.put(`http://127.0.0.1:8000/projects/${projectId}/`, newData, axiosConfig);
 };

@@ -5,7 +5,7 @@ import Header from "./Header";
 
 const MainPage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-
+  console.log(selectedProject)
   const handleProjectClick = (projectId) => {
     setSelectedProject(projectId);
   };

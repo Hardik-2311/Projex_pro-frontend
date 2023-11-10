@@ -23,7 +23,9 @@ export const deleteProjectAsync = createAsyncThunk("project/deleteProject", asyn
   return projectId;
 });
 
-export const editProjectAsync = createAsyncThunk("project/editProject", async ({ projectId, newData }) => {
+export const editProjectAsync = createAsyncThunk("project/editProject", async (projectId,newData) => {
+  console.log(projectId)
+  console.log(newData)
   const response = await editProjectApi(projectId, newData);
   return response.data;
 });
