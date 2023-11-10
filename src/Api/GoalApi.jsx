@@ -17,6 +17,7 @@ export const deleteGoalApi = (goalId) => {
   return axios.delete(`http://127.0.0.1:8000/goals/${goalId}/`, axiosConfig);
 };
 
-export const editGoalApi = (goalId, newData) => {
+export const editGoalApi = (newData,goalId) => {
+  console.log(goalId)
   return axios.put(`http://127.0.0.1:8000/goals/${goalId}/`, newData, axiosConfig);
 };

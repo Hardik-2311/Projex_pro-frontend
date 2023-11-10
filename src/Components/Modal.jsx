@@ -6,7 +6,6 @@ const Modal = ({ isOpen, onClose, children }) => {
     isOpen && (
       <div className="modal">
         {children}
-        <button onClick={onClose}>Cancel</button>
       </div>
     )
   );

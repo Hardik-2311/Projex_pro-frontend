@@ -1,15 +1,15 @@
 import React from "react";
-
+import { BACKEND_HOST } from "../hosts";
 const LoginPage = () => {
-  const auth_params = {
-    CLIENT_ID: "0eNloDqa757KnDrpnjQ2tfSGES1TVgIrxhb9H5pd",
-    STATE_STRING: "this_string",
-    REDIRECT_URI: "http://localhost:3000/projects/",
-  };
+  // const auth_params = {
+  //   CLIENT_ID: "0eNloDqa757KnDrpnjQ2tfSGES1TVgIrxhb9H5pd",
+  //   STATE_STRING: "Success",
+  //   REDIRECT_URI: "http://localhost:3000/projects/",
+  // };
 
   const handleClick = (e) => {
     e.preventDefault();
-    window.location.href = `https://channeli.in/oauth/authorise/?client_id=${auth_params.CLIENT_ID}&redirect_uri=${auth_params.REDIRECT_URI}&state=${auth_params.STATE_STRING}`;
+    window.location.href=`${BACKEND_HOST}login`;
   };
 
   return (

@@ -6,6 +6,7 @@ import {
   deleteTaskAsync,
   createTaskAsync,
 } from "../Features/taskSlice";
+import Modal from "../Components/Modal";
 import { fetchUsersAsync } from "../Features/userSlice";
 import { MdDelete } from "react-icons/md";
 import TaskModal from "../Modals/TaskModal";
@@ -14,13 +15,11 @@ function TaskList(props) {
   const dispatch = useDispatch();
 
   const users = useSelector((state) => state.user.data);
-  console.log(users);
   const statususer = useSelector((state) => state.user.status);
   const activeUsers = users.filter((user) => user.is_active === true);
-  let creator
+  let creator;
   activeUsers.map((activeuser) => {
     creator = activeuser.username;
-    console.log(creator);
     return creator;
   });
   useEffect(() => {
@@ -39,9 +38,7 @@ function TaskList(props) {
 
         project: projectId,
       };
-      console.log(projectId);
       dispatch(createTaskAsync(taskDataWithProjectId));
-      console.log("Creating task with data:", taskDataWithProjectId);
     },
     [dispatch, projectId]
   );
@@ -79,7 +76,7 @@ function TaskList(props) {
                     </p>
                   </li>
                   <div className="mt-2">
-                    <GoalList taskId={task.id} creator={creator}/>
+                    <GoalList taskId={task.id} creator={creator} />
                   </div>
                 </div>
               ) : (
@@ -101,13 +98,15 @@ function TaskList(props) {
       >
         Add a task
       </div>
-      <TaskModal
-        isOpen={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        onTaskCreate={handleTaskCreate}
-        project={projectId}
-        creator={creator}
-      />
+      <Modal isOpen={isTaskModalOpen}>
+        <TaskModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          onTaskCreate={handleTaskCreate}
+          project={projectId}
+          creator={creator}
+        />
+      </Modal>
     </div>
   );
 }

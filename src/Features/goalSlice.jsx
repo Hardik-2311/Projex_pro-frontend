@@ -1,6 +1,11 @@
 // features/goal/goalSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchGoalsApi, createGoalApi, deleteGoalApi, editGoalApi } from "../Api/GoalApi";
+import {
+  fetchGoalsApi,
+  createGoalApi,
+  deleteGoalApi,
+  editGoalApi,
+} from "../Api/GoalApi";
 
 const initialState = {
   data: [],
@@ -13,20 +18,29 @@ export const fetchGoalsAsync = createAsyncThunk("goal/fetchGoals", async () => {
   return response.data;
 });
 
-export const createGoalAsync = createAsyncThunk("goal/createGoal", async (newGoal) => {
-  const response = await createGoalApi(newGoal);
-  return response.data;
-});
+export const createGoalAsync = createAsyncThunk(
+  "goal/createGoal",
+  async (newGoal) => {
+    const response = await createGoalApi(newGoal);
+    return response.data;
+  }
+);
 
-export const deleteGoalAsync = createAsyncThunk("goal/deleteGoal", async (goalId) => {
-  await deleteGoalApi(goalId);
-  return goalId;
-});
+export const deleteGoalAsync = createAsyncThunk(
+  "goal/deleteGoal",
+  async (goalId) => {
+    await deleteGoalApi(goalId);
+    return goalId;
+  }
+);
 
-export const editGoalAsync = createAsyncThunk("goal/editGoal", async ({ goalId, newData }) => {
-  const response = await editGoalApi(goalId, newData);
-  return response.data;
-});
+export const editGoalAsync = createAsyncThunk(
+  "goal/editGoal",
+  async ({ newData, goalId }) => {
+    console.log(goalId);
+    await editGoalApi(newData, goalId);
+  }
+);
 
 const goalSlice = createSlice({
   name: "goal",
@@ -52,10 +66,11 @@ const goalSlice = createSlice({
         state.data = state.data.filter((goal) => goal.id !== action.payload);
       })
       .addCase(editGoalAsync.fulfilled, (state, action) => {
-        // Update the goal in the state
-        const updatedGoalIndex = state.data.findIndex((goal) => goal.id === action.payload.id);
-        if (updatedGoalIndex !== -1) {
-          state.data[updatedGoalIndex] = action.payload;
+        const editedGoal = action.payload;
+        const index = state.data.findIndex((goal) => goal.id === editedGoal);
+        console.log(index);
+        if (index !== -1) {
+          state.data[index] = editedGoal;
         }
       });
   },

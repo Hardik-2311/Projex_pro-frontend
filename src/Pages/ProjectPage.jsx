@@ -1,6 +1,7 @@
 // ProjectPage.jsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import {
   fetchProjectsAsync,
   deleteProjectAsync,
@@ -14,12 +15,11 @@ import useDarkMode from "../Hooks/useDark";
 import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
-import ModalForm from "../Modals/ModalForm";
+import ProjectModal from "../Modals/ProjectModal";
 function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const status = useSelector((state) => state.project.status);
-  const error = useSelector((state) => state.project.error);
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
@@ -27,11 +27,11 @@ function ProjectPage({ onProjectClick }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const users = useSelector((state) => state.user.data);
+  console.log(users)
   const activeUsers = users.filter((user) => user.is_active === true);
   let creator;
   activeUsers.map((activeuser) => {
     creator = activeuser.username;
-    console.log(creator);
     return creator;
   });
   const toggleDarkMode = (checked) => {
@@ -49,7 +49,7 @@ function ProjectPage({ onProjectClick }) {
 
   const handleCreateProject = (formData) => {
     dispatch(createProjectAsync(formData));
-    console.log("Creating project with data:", formData);
+    toast.success("Project is created")
   };
 
   useEffect(() => {
@@ -61,8 +61,9 @@ function ProjectPage({ onProjectClick }) {
   const handleDeleteProject = async (projectId) => {
     try {
       await dispatch(deleteProjectAsync(projectId));
+      toast.success("Project is deleted")
     } catch (e) {
-      console.error(error);
+      toast.error(e)
     }
   };
 
@@ -74,14 +75,12 @@ function ProjectPage({ onProjectClick }) {
   };
 
   const handleUpdateProject = (formData) => {
-    console.log(editingProject);
-    console.log(formData);
-    dispatch(editProjectAsync(editingProject.id, formData));
+    dispatch(editProjectAsync({projectId:editingProject.id,newData:formData}));
     closeModal();
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
         ALL Projects {projects.length}
       </h3>
@@ -160,7 +159,8 @@ function ProjectPage({ onProjectClick }) {
           <BsFillMoonFill />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <ModalForm
+          <ProjectModal
+            isOpen={isModalOpen}
             onSubmit={
               editingProject ? handleUpdateProject : handleCreateProject
             }

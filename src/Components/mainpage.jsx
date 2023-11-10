@@ -11,7 +11,7 @@ const MainPage = () => {
   };
 
   return (
-    <div className="flex flex-col overflow-scroll">
+    <div className="flex flex-col overflow-scroll scrollbar-hide">
       <div className="">
         <Header />
       </div>

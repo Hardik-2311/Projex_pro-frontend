@@ -5,28 +5,45 @@ import {
   fetchGoalsAsync,
   deleteGoalAsync,
   createGoalAsync,
+  editGoalAsync,
 } from "../Features/goalSlice";
 
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import GoalModal from "../Modals/GoalModal";
 import Modal from "../Components/Modal";
 
 function GoalList(props) {
   const taskId = props.taskId;
-  const creator=props.creator;
+  const creator = props.creator;
   const dispatch = useDispatch();
   const goals = useSelector((state) => state.goal.data);
   const status = useSelector((state) => state.goal.status);
   const error = useSelector((state) => state.goal.error);
 
-  const [isgoalModalOpen, setIsgoalModalOpen] = useState(false);
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
+  const [selectedGoal, setSelectedGoal] = useState(null);
 
   const handleGoalCreate = (formData) => {
     dispatch(createGoalAsync(formData));
+    setIsGoalModalOpen(false);
+  };
+
+  const handleGoalEdit = (formData) => {
+    if (selectedGoal) {
+      console.log(selectedGoal.id);
+      dispatch(editGoalAsync({newData:formData, goalId:selectedGoal.id}));
+      setIsGoalModalOpen(false);
+      setSelectedGoal(null);
+    }
   };
 
   const handleGoalDelete = (goalId) => {
     dispatch(deleteGoalAsync(goalId));
+  };
+
+  const handleGoalEditClick = (goal) => {
+    setSelectedGoal(goal);
+    setIsGoalModalOpen(true);
   };
 
   useEffect(() => {
@@ -58,7 +75,11 @@ function GoalList(props) {
                     <div className="text-black text-xl dark:text-white font-bold">
                       {goal.title}
                     </div>
-                    <div>
+                    <div className="flex items-center">
+                      <MdModeEdit
+                        className="cursor-pointer mr-2"
+                        onClick={() => handleGoalEditClick(goal)}
+                      />
                       <MdDelete
                         className="cursor-pointer"
                         onClick={() => handleGoalDelete(goal.id)}
@@ -74,18 +95,18 @@ function GoalList(props) {
         </ul>
       </div>
       <div>
-        <button className="button" onClick={() => setIsgoalModalOpen(true)}>
+        <button className="button" onClick={() => setIsGoalModalOpen(true)}>
           Add Goal
         </button>
       </div>
 
-      {/* GoalModal */}
-
-      <Modal isOpen={isgoalModalOpen}>
+      <Modal isOpen={isGoalModalOpen}>
         <GoalModal
-          onClose={() => setIsgoalModalOpen(false)}
-          className="flex flex-col"
+          isOpen={isGoalModalOpen}
+          onClose={() => setIsGoalModalOpen(false)}
           onGoalCreate={handleGoalCreate}
+          onGoalEdit={handleGoalEdit}
+          selectedGoal={selectedGoal}
           taskId={taskId}
           creator={creator}
         />
