@@ -1,15 +1,10 @@
 import React from "react";
 import { BACKEND_HOST } from "../hosts";
 const LoginPage = () => {
-  // const auth_params = {
-  //   CLIENT_ID: "0eNloDqa757KnDrpnjQ2tfSGES1TVgIrxhb9H5pd",
-  //   STATE_STRING: "Success",
-  //   REDIRECT_URI: "http://localhost:3000/projects/",
-  // };
 
   const handleClick = (e) => {
     e.preventDefault();
-    window.location.href=`${BACKEND_HOST}login`;
+    window.location.href='http://127.0.0.1:8000/login';
   };
 
   return (

@@ -16,6 +16,7 @@ import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
 import ProjectModal from "../Modals/ProjectModal";
+import CheckLogin from "../SingleUser/singleuser";
 function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
@@ -51,13 +52,15 @@ function ProjectPage({ onProjectClick }) {
     dispatch(createProjectAsync(formData));
     toast.success("Project is created")
   };
-
+  
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchProjectsAsync());
     }
   }, [status, dispatch]);
-
+  useEffect(()=>{
+    CheckLogin();
+},[]);
   const handleDeleteProject = async (projectId) => {
     try {
       await dispatch(deleteProjectAsync(projectId));

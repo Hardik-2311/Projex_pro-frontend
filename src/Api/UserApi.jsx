@@ -5,7 +5,6 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 const axiosConfig = {
   withCredentials: true,
-  'Access-Control-Allow-Origin': '*',
 };
 
 export const fetchUsersApi = () => {
