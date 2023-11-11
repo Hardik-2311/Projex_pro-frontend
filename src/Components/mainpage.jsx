@@ -15,7 +15,7 @@ const MainPage = () => {
         <Header />
       </div>
       <div className=" flex flex-row ">
-        <div className="left-panel w-[1/3.5] h-screen justify-center dark:bg-[#2b2c37] bg-white ">
+        <div className="left-panel w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
           <ProjectList onProjectClick={handleProjectClick} />
         </div>
         <div className="right-panel dark:bg-[#20212c] bg-[#E9EFFA] min-w-max w-[100vw]">
