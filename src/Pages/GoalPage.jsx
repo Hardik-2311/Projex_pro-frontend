@@ -49,8 +49,6 @@ function GoalList(props) {
   const dispatch = useDispatch();
   const goals = useSelector((state) => state.goal.data);
   const status = useSelector((state) => state.goal.status);
-  const error = useSelector((state) => state.goal.error);
-
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const handleDroppedGoal = (droppedGoal, newTaskId) => {

@@ -4,12 +4,13 @@ export const userSlice=createSlice({
     name:"singleuser",
     initialState:{
         name:"",
-        year:2,
+        year:"",
         username:"",
         email:"",
         enrolment_no:"",
         is_admin:false,
         is_active:true,
+        profile_pic:"",
     },
     reducers:{
         setUserData:(state,action)=>{
@@ -20,6 +21,7 @@ export const userSlice=createSlice({
             state.enrolment_no=action.payload.enrolment_no;
             state.is_admin=action.payload.is_superuser;
             state.is_active=action.payload.is_active
+            state.profile_pic=action.payload.profile_pic
         }
 
         

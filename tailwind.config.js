@@ -3,7 +3,10 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "class",
   theme: {
-    extend: {},
+    fontFamily: {
+      'heading':'"Lobster Two", sans-serif',
+      'sub-heading':'"Montserrat", sans-serif;'
+    }
   },
   plugins: [require('tailwind-scrollbar-hide')],
 };

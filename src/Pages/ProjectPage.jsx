@@ -50,14 +50,8 @@ function ProjectPage({ onProjectClick }) {
   const loginUser = async () => {
     await CheckLogin();
   };
-
+// here is the biggest mistake will do it later
    loginUser()
-  // useEffect(() => {
-  //   loginUser()
-  //   return () => {
-      
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (status === "idle") {
@@ -88,13 +82,13 @@ function ProjectPage({ onProjectClick }) {
     closeModal();
   };
   return (
-    <div className="h-screen">
+    <div className="">
       <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
         ALL Projects {projects.length}
       </h3>
       <div className="flex flex-col items-start p-4 gap-4 ">
         <div className="">
-          <ul className="flex flex-col space-y-3">
+          <ul className="flex flex-col space-y-3 items-center">
             {projects.map((project) => (
               <li
                 key={project.id}
@@ -102,15 +96,19 @@ function ProjectPage({ onProjectClick }) {
                   setSelectedProject(project.id);
                   onProjectClick(project.id);
                 }}
-                className={`text-xl flex flex-row justify-between w-full gap-4 items-center font-bold cursor-pointer`}
+                className={`text-xl flex flex-row space-y-6 justify-between items-baseline w-full gap-4 font-bold cursor-pointer ${
+                  selectedProject === project.id
+                    ? "dark:text-white text-black "
+                    : ""
+                }`}
               >
                 <div>
                   <LuProjector />
                 </div>
                 <div
-                  className={` text-black dark:text-white dark:hover:text-[#635fc7] ${
+                  className={` text-black dark:text-white font-sub-heading dark:hover:text-[#635fc7] ${
                     selectedProject === project.id
-                      ? " text-[#635fc7] underline "
+                      ? "font-heading"
                       : ""
                   }`}
                   onClick={() => {

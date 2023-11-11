@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
+function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
   const [formData, setFormData] = useState({
     Task_name: "",
     description: "",
     creator: creator,
-    project:project
+    project: project,
   });
 
   const handleInputChange = (e) => {
@@ -24,11 +24,13 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
   return (
     <div
       className={` fixed inset-0 z-50 ${
-        isOpen ? "opacity-100 backdrop-blur-md" : "opacity-0 pointer-events-none"
-      } transition-opacity duration-300 scrollbar-hide  `}
+        isOpen
+          ? "opacity-100 backdrop-blur-md"
+          : "opacity-0 pointer-events-none"
+      } transition-opacity duration-300 scrollbar-hide overflow-y-scroll  `}
     >
       <div
-        className=" overflow-y-scroll scrollbar-hide max-h-[100vh]  my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
+        className=" overflow-y-scroll scrollbar-hide my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
        shadow-md shadow-[#364e7e1a] max-w-md mx-auto  w-full px-8  py-8 rounded-xl"
       >
         <div className="flex flex-row justify-around items-baseline">
@@ -98,13 +100,15 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
             />
           </div>
 
-          <button
-            type="button"
-            onClick={handleTaskCreate}
-            className="dark:text-white py-2 px-4 rounded-full flex-grow text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
-          >
-            Add Task
-          </button>
+          <div className="flex flex-row justify-center items-center">
+            <button
+              type="button"
+              onClick={handleTaskCreate}
+              className="dark:text-white py-2 px-4 rounded-full flex-grow text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
+            >
+              Add Task
+            </button>
+          </div>
         </form>
       </div>
     </div>
