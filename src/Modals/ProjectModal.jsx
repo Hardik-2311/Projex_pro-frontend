@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit }) => {
+const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit ,initialData }) => {
   const [formData, setFormData] = useState({
     project_name: "",
     creator: creator,
@@ -9,14 +9,9 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit
   });
 
   useEffect(() => {
-    if (projectToEdit) {
+    if (initialData) {
       // If editing, set form data with the project's previous data
-      setFormData({
-        project_name: projectToEdit.project_name,
-        creator: projectToEdit.creator,
-        members: projectToEdit.members,
-        description: projectToEdit.description,
-      });
+      setFormData(initialData);
     } else {
       // If creating, reset the form data
       setFormData({
@@ -26,7 +21,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit
         description: "",
       });
     }
-  }, [projectToEdit, creator]);
+  }, [initialData, creator]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,7 +43,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit
         className="overflow-y-scroll scrollbar-hide max-h-[95vh] my-auto bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
        shadow-md shadow-[#364e7e1a] max-w-md mx-auto w-full px-8 py-8 rounded-xl"
       >
-        <div className="flex flex-row justify-around items-center">
+        <div className="flex flex-row justify-around items-baseline">
           <div>
             <h2 className="text-2xl font-bold mb-4">
               {projectToEdit ? "Edit Project" : "Create Project"}

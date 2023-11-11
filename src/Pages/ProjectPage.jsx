@@ -21,7 +21,7 @@ function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const status = useSelector((state) => state.project.status);
-  const User_login=useSelector((state)=>state.singleuser)
+  const User_login = useSelector((state) => state.singleuser);
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
@@ -43,25 +43,28 @@ function ProjectPage({ onProjectClick }) {
   };
 
   const handleCreateProject = (formData) => {
-    console.log(formData)
+    console.log(formData);
     dispatch(createProjectAsync(formData));
     toast.success("Project is created");
   };
-  const loginUser = async ()=>{
+  const loginUser = async () => {
     await CheckLogin();
-  }
+  };
 
-  loginUser()
+   loginUser()
+  // useEffect(() => {
+  //   loginUser()
+  //   return () => {
+      
+  //   };
+  // }, []);
 
-  
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchProjectsAsync());
-      
     }
   }, [status, dispatch]);
 
-  
   const handleDeleteProject = async (projectId) => {
     try {
       await dispatch(deleteProjectAsync(projectId));
@@ -99,7 +102,7 @@ function ProjectPage({ onProjectClick }) {
                   setSelectedProject(project.id);
                   onProjectClick(project.id);
                 }}
-                className={`text-xl flex flex-row gap-4 items-center font-bold cursor-pointer`}
+                className={`text-xl flex flex-row justify-between w-full gap-4 items-center font-bold cursor-pointer`}
               >
                 <div>
                   <LuProjector />
@@ -146,13 +149,13 @@ function ProjectPage({ onProjectClick }) {
             +
           </button>
         </div>
-        <div className="mx-2 p-4 relative space-x-2 bg-slate-100 dark:bg-[#20212c] flex justify-center items-center rounded-lg">
-          <BsFillSunFill />
+        <div className="p-4 w-full justify-center relative space-x-2 bg-slate-100 dark:bg-[#20212c] flex  items-center rounded-lg">
+          <BsFillSunFill className="dark:text-white" />
           <Switch
             checked={darkSide}
             onChange={toggleDarkMode}
             className={`${
-              darkSide ? "bg-[#635fc7]" : "bg-gray-200"
+              darkSide ? "bg-[#635fc7] " : "bg-gray-200"
             } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
@@ -161,7 +164,7 @@ function ProjectPage({ onProjectClick }) {
               } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
-          <BsFillMoonFill />
+          <BsFillMoonFill className="dark:text-white"/>
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ProjectModal

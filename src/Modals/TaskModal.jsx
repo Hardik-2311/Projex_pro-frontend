@@ -31,7 +31,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator , project }) {
         className=" overflow-y-scroll scrollbar-hide max-h-[100vh]  my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
        shadow-md shadow-[#364e7e1a] max-w-md mx-auto  w-full px-8  py-8 rounded-xl"
       >
-        <div className="flex flex-row justify-around items-center">
+        <div className="flex flex-row justify-around items-baseline">
           <div>
             <h2 className="text-2xl font-bold mb-4">Add Task</h2>
           </div>
