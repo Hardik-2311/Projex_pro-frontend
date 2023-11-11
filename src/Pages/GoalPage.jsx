@@ -36,8 +36,8 @@ const DraggableGoal = ({ goal, onEditClick, onDelete }) => {
             {goal.task_id}
           </div>
           <div className="flex items-center">
-            <MdModeEdit className="cursor-pointer mr-2" onClick={onEditClick} />
-            <MdDelete className="cursor-pointer" onClick={onDelete} />
+            <MdModeEdit className="cursor-pointer mr-2 dark:text-white hover:dark:text-[#635FC7]" onClick={onEditClick} />
+            <MdDelete className="cursor-pointer dark:text-white hover:dark:text-[#635FC7]" onClick={onDelete} />
           </div>
         </div>
       </li>
@@ -96,7 +96,6 @@ function GoalList(props) {
       dispatch(fetchGoalsAsync());
     }
   }, [status, dispatch]);
-// Filter goals for the current task
 // Filter goals for the current task
 const taskGoals = goals.filter((goal) => props.taskId === goal.task_id);
   return (

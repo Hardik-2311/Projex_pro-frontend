@@ -58,7 +58,7 @@ function TaskList(props) {
                     <p className="font-bold text-center uppercase flex items-center justify-around">
                       {task.Task_name}
                       <MdDelete
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:text-[#635FC7] dark:text-white"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleTaskDelete(task.id);
