@@ -1,8 +1,11 @@
 // api/userApi.js
 import axios from "axios";
-
+axios.defaults.headers.post["Content-Type"]="multipart/form-data";
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
 const axiosConfig = {
   withCredentials: true,
+  'Access-Control-Allow-Origin': '*',
 };
 
 export const fetchUsersApi = () => {

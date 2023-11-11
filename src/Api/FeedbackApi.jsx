@@ -3,6 +3,7 @@ import axios from "axios";
 
 const axiosConfig = {
   withCredentials: true,
+  'Access-Control-Allow-Origin': '*',
 };
 
 export const fetchFeedbacksApi = () => {
