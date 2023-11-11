@@ -7,8 +7,7 @@ const Header = () => {
     <div className="h-max p-3 bg-white dark:bg-[#2b2c37]">
       <nav className="flex justify-between items-center">
         <div className="rounded-lg flex items-center gap-[1rem]">
-          {/* <img src={Logo} alt="" className="rounded-full w-[4rem]" /> */}
-          <div className='font-bold text-black text-xl'>ProjexPro</div>
+          <div className='font-bold text-black dark:text-white text-2xl'>ProjexPro</div>
         </div>
 
         <div className="text-2xl font-bold text-black dark:text-white hidden md:block">

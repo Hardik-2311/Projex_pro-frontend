@@ -21,6 +21,7 @@ function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const status = useSelector((state) => state.project.status);
+  const User_login=useSelector((state)=>state.singleuser)
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
@@ -28,13 +29,6 @@ function ProjectPage({ onProjectClick }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const users = useSelector((state) => state.user.data);
-  console.log(users)
-  const activeUsers = users.filter((user) => user.is_active === true);
-  let creator;
-  activeUsers.map((activeuser) => {
-    creator = activeuser.username;
-    return creator;
-  });
   const toggleDarkMode = (checked) => {
     setTheme(colorTheme);
     setDarkSide(checked);
@@ -49,24 +43,31 @@ function ProjectPage({ onProjectClick }) {
   };
 
   const handleCreateProject = (formData) => {
+    console.log(formData)
     dispatch(createProjectAsync(formData));
-    toast.success("Project is created")
+    toast.success("Project is created");
   };
+  const loginUser = async ()=>{
+    await CheckLogin();
+  }
+
+  loginUser()
+
   
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchProjectsAsync());
+      
     }
   }, [status, dispatch]);
-  useEffect(()=>{
-    CheckLogin();
-},[]);
+
+  
   const handleDeleteProject = async (projectId) => {
     try {
       await dispatch(deleteProjectAsync(projectId));
-      toast.success("Project is deleted")
+      toast.success("Project is deleted");
     } catch (e) {
-      toast.error(e)
+      toast.error(e);
     }
   };
 
@@ -78,10 +79,11 @@ function ProjectPage({ onProjectClick }) {
   };
 
   const handleUpdateProject = (formData) => {
-    dispatch(editProjectAsync({projectId:editingProject.id,newData:formData}));
+    dispatch(
+      editProjectAsync({ projectId: editingProject.id, newData: formData })
+    );
     closeModal();
   };
-
   return (
     <div className="h-screen">
       <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
@@ -169,8 +171,9 @@ function ProjectPage({ onProjectClick }) {
             }
             onClose={closeModal}
             initialData={editingProject}
-            creator={creator}
+            creator={User_login.name}
             users={users}
+            projectToEdit={editingProject}
           />
         </Modal>
       </div>

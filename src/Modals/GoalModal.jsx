@@ -14,16 +14,21 @@ function GoalModal({
     description: "",
     creator: creator,
     due_date: "",
-    finished: false,
     task_id: taskId,
   });
 
   useEffect(() => {
     if (selectedGoal) {
       // If in edit mode, set the form data with the selected goal's data
-      setFormData(selectedGoal);
+      setFormData({
+        title: selectedGoal.title,
+        description: selectedGoal.description,
+        creator: creator,
+        due_date: selectedGoal.due_date,
+        task_id: taskId,
+      });
     }
-  }, [selectedGoal]);
+  }, [selectedGoal, creator, taskId]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,10 +46,11 @@ function GoalModal({
     }
     onClose();
   };
+
   return (
     <div
       className={`fixed inset-0 z-50 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        isOpen ? "opacity-100 backdrop-blur-md" : "opacity-0 pointer-events-none"
       } transition-opacity duration-300 scrollbar-hide  `}
     >
       <div
@@ -53,7 +59,9 @@ function GoalModal({
       >
         <div className="flex flex-row justify-around items-center">
           <div>
-          <h2 className="text-2xl font-bold mb-4">{selectedGoal ? "Edit Goal" : "Add Goal"}</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {selectedGoal ? "Edit Goal" : "Add Goal"}
+            </h2>
           </div>
           <div>
             <button
@@ -118,23 +126,11 @@ function GoalModal({
             />
           </div>
 
-          <div className="mb-4">
-            <label className=" text-sm dark:text-white text-gray-500 block">
-              Finished:
-            </label>
-            <input
-              type="checkbox"
-              name="finished"
-              checked={formData.finished}
-              onChange={handleInputChange}
-              className="mr-2"
-            />
-            <span className=" text-sm dark:text-white text-gray-500">
-              Mark as finished
-            </span>
-          </div>
-
-          <button type="button" onClick={handleGoalCreate} className="text-white py-2 px-4 rounded-full flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none">
+          <button
+            type="button"
+            onClick={handleGoalCreate}
+            className="text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
+          >
             {selectedGoal ? "Edit Goal" : "Add Goal"}
           </button>
         </form>

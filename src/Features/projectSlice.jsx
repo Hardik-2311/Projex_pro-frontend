@@ -14,6 +14,7 @@ export const fetchProjectsAsync = createAsyncThunk("project/fetchProjects", asyn
 });
 
 export const createProjectAsync = createAsyncThunk("project/createProject", async (newProject) => {
+  console.log(newProject)
   const response = await createProjectApi(newProject);
   return response.data;
 });

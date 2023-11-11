@@ -13,15 +13,8 @@ import TaskModal from "../Modals/TaskModal";
 function TaskList(props) {
   const projectId = props.projectId;
   const dispatch = useDispatch();
-
-  const users = useSelector((state) => state.user.data);
   const statususer = useSelector((state) => state.user.status);
-  const activeUsers = users.filter((user) => user.is_active === true);
-  let creator;
-  activeUsers.map((activeuser) => {
-    creator = activeuser.username;
-    return creator;
-  });
+  const User_login=useSelector((state)=>state.singleuser)
   useEffect(() => {
     if (statususer === "idle") {
       dispatch(fetchUsersAsync());
@@ -74,7 +67,7 @@ function TaskList(props) {
                     </p>
                   </li>
                   <div className="mt-2">
-                    <GoalList taskId={task.id} creator={creator} />
+                    <GoalList taskId={task.id} creator={User_login.name} />
                   </div>
                 </div>
               ) : (
@@ -102,7 +95,7 @@ function TaskList(props) {
           onClose={() => setIsTaskModalOpen(false)}
           onTaskCreate={handleTaskCreate}
           project={projectId}
-          creator={creator}
+          creator={User_login.name}
         />
       </Modal>
     </div>

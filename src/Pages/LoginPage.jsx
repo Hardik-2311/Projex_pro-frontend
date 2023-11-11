@@ -1,12 +1,10 @@
 import React from "react";
-import { BACKEND_HOST } from "../hosts";
-const LoginPage = () => {
 
+const LoginPage = () => {
   const handleClick = (e) => {
     e.preventDefault();
     window.location.href='http://127.0.0.1:8000/login';
   };
-
   return (
     <div className="w-full min-h-screen bg-blue-300">
       <div className="h-[100vh] flex justify-center items-center bg-slate-400">

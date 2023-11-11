@@ -38,7 +38,8 @@ export const editGoalAsync = createAsyncThunk(
   "goal/editGoal",
   async ({ newData, goalId }) => {
     console.log(goalId);
-    await editGoalApi(newData, goalId);
+    const response = await editGoalApi(newData, goalId);
+    return response.data;
   }
 );
 
@@ -67,7 +68,7 @@ const goalSlice = createSlice({
       })
       .addCase(editGoalAsync.fulfilled, (state, action) => {
         const editedGoal = action.payload;
-        const index = state.data.findIndex((goal) => goal.id === editedGoal);
+        const index = state.data.findIndex((goal) => goal.id === editedGoal.id);
         console.log(index);
         if (index !== -1) {
           state.data[index] = editedGoal;

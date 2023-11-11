@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
+const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users, projectToEdit }) => {
   const [formData, setFormData] = useState({
     project_name: "",
     creator: creator,
     members: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (projectToEdit) {
+      // If editing, set form data with the project's previous data
+      setFormData({
+        project_name: projectToEdit.project_name,
+        creator: projectToEdit.creator,
+        members: projectToEdit.members,
+        description: projectToEdit.description,
+      });
+    } else {
+      // If creating, reset the form data
+      setFormData({
+        project_name: "",
+        creator: creator,
+        members: "",
+        description: "",
+      });
+    }
+  }, [projectToEdit, creator]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,22 +41,24 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
   return (
     <div
       className={`fixed inset-0 z-50 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        isOpen ? "opacity-100 backdrop-blur-md" : "opacity-0 pointer-events-none"
       } transition-opacity duration-300 scrollbar-hide  `}
     >
       <div
-        className=" overflow-y-scroll scrollbar-hide max-h-[95vh]  my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
-       shadow-md shadow-[#364e7e1a] max-w-md mx-auto  w-full px-8  py-8 rounded-xl"
+        className="overflow-y-scroll scrollbar-hide max-h-[95vh] my-auto bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
+       shadow-md shadow-[#364e7e1a] max-w-md mx-auto w-full px-8 py-8 rounded-xl"
       >
         <div className="flex flex-row justify-around items-center">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Create Project</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {projectToEdit ? "Edit Project" : "Create Project"}
+            </h2>
           </div>
           <div>
             <button
               type="button"
               onClick={onClose}
-              className=" button mt-4 text-white"
+              className="button mt-4 text-white"
             >
               Close
             </button>
@@ -44,8 +66,8 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4  flex flex-col space-y-1">
-            <label className=" text-sm dark:text-white text-gray-500">
+          <div className="mb-4 flex flex-col space-y-1">
+            <label className="text-sm dark:text-white text-gray-500">
               Project Name:
             </label>
             <input
@@ -53,7 +75,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
               name="project_name"
               value={formData.project_name}
               onChange={handleInputChange}
-              className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
+              className="bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1 ring-0"
             />
           </div>
 
@@ -67,14 +89,12 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
               value={formData.creator}
               onChange={handleInputChange}
               disabled
-              className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
+              className="bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1 ring-0"
             />
           </div>
 
           <div className="mb-4 flex flex-col space-y-2">
-            <label className="text-sm dark:text-white">
-              Members:
-            </label>
+            <label className="text-sm dark:text-white">Members:</label>
             <select
               name="members"
               value={formData.members}
@@ -85,7 +105,11 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
                 Select a member
               </option>
               {users.map((user) => (
-                <option key={user.id} value={user.username} className="dark:bg-[#2b2c37]">
+                <option
+                  key={user.id}
+                  value={user.username}
+                  className="dark:bg-[#2b2c37]"
+                >
                   {user.username}
                 </option>
               ))}
@@ -93,22 +117,22 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
           </div>
 
           <div className="mb-4 flex flex-col space-y-1">
-            <label className=" text-sm dark:text-white text-gray-500">
+            <label className="text-sm dark:text-white text-gray-500">
               Description:
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className=" bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
+              className="bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]"
             />
           </div>
 
           <button
             type="submit"
-            className="dark:text-white py-2 px-4 rounded-full flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
+            className="dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
           >
-            Create Project
+            {projectToEdit ? "Edit Project" : "Create Project"}
           </button>
         </form>
       </div>
