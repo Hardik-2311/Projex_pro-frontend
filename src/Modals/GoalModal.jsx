@@ -130,13 +130,15 @@ function GoalModal({
             />
           </div>
 
+          <div className="flex justify-center items-center">
           <button
             type="button"
             onClick={handleGoalCreate}
-            className="text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0  border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
+            className="text-black dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0   border-[1px] border-gray-300 focus:outline-[#635fc7] dark:hover:bg-[#635fc7] dark:hover:text-[white] outline-none"
           >
             {selectedGoal ? "Edit Goal" : "Add Goal"}
           </button>
+          </div>
         </form>
       </div>
     </div>

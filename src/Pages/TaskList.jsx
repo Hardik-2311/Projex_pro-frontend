@@ -56,7 +56,7 @@ function TaskList(props) {
           <ul className="flex flex-row gap-3">
             {tasks.map((task) => {
               return task.project === projectId ? (
-                <div key={task.id} className=" border">
+                <div key={task.id}>
                   <li className="w-[300px] dark:text-white text-gray-500 px-3 py-3 dark:bg-[#20212c] gap-3">
                     <p className="font-bold text-center uppercase flex items-center justify-around">
                       <CircleIcon/>

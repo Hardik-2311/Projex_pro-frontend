@@ -61,6 +61,7 @@ function GoalList(props) {
   };
 
   const [{ isOver }, drop] = useDrop({
+
     accept: "GOAL",
     drop: (item) => handleDroppedGoal(item.goal, props.taskId),
     collect: (monitor) => ({
