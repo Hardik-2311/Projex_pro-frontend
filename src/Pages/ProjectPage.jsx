@@ -74,7 +74,9 @@ function ProjectPage({ onProjectClick }) {
     setEditingProject(project);
     openModal();
   };
-
+  const handleCreatewithFormdata=()=>{
+      setEditingProject(null)
+  }
   const handleUpdateProject = (formData) => {
     dispatch(
       editProjectAsync({ projectId: editingProject.id, newData: formData })
@@ -137,7 +139,10 @@ function ProjectPage({ onProjectClick }) {
         <div>
           <button
             className="hidden md:block py-2 px-3 text-md border border-gray-700 dark:border-white rounded-full font-bold dark:text-white"
-            onClick={openModal}
+            onClick={()=>{
+              openModal()
+              handleCreatewithFormdata()
+            }}
           >
             + Create New Project
           </button>
@@ -172,7 +177,6 @@ function ProjectPage({ onProjectClick }) {
             initialData={editingProject}
             creator={User_login.name}
             users={users}
-            projectToEdit={editingProject}
           />
         </Modal>
       </div>

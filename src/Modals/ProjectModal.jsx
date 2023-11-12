@@ -1,25 +1,34 @@
-// ProjectModal.jsx
-import React, { useState, useEffect } from "react";
-
-const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
+import { useState,useEffect } from "react";
+const ProjectModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  creator,
+  users,
+  initialData,
+}) => {
   const [formData, setFormData] = useState({
     project_name: "",
     creator: creator,
     members: "",
     description: "",
   });
-
   useEffect(() => {
     if (isOpen) {
-      // Reset form data when the modal is opened
-      setFormData({
-        project_name: "",
-        creator: creator,
-        members: "",
-        description: "",
-      });
+      if (initialData) {
+        // editing dtata
+        setFormData(initialData);
+      } else {
+      //  new create data
+        setFormData({
+          project_name: "",
+          creator: creator,
+          members: "",
+          description: "",
+        });
+      }
     }
-  }, [isOpen, creator]);
+  }, [isOpen, initialData, creator]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +39,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
     onSubmit(formData);
     onClose();
   };
-
   return (
     <div
       className={`fixed inset-0 z-50 ${
@@ -45,7 +53,9 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
       >
         <div className="flex flex-row justify-around items-baseline">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Create Project</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {initialData ? "Edit Project" : "Create Project"}
+            </h2>
           </div>
           <div>
             <button
@@ -64,7 +74,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
               Project Name:
             </label>
             <input
-              required
               type="text"
               name="project_name"
               value={formData.project_name}
@@ -78,7 +87,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
               Creator:
             </label>
             <input
-              required
               type="text"
               name="creator"
               value={formData.creator}
@@ -91,7 +99,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
           <div className="mb-4 flex flex-col space-y-2">
             <label className="text-sm dark:text-white">Members:</label>
             <select
-              required
               name="members"
               value={formData.members}
               onChange={handleInputChange}
@@ -117,7 +124,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
               Description:
             </label>
             <textarea
-              required
               name="description"
               value={formData.description}
               onChange={handleInputChange}
@@ -129,7 +135,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, creator, users }) => {
             type="submit"
             className="dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border-[1px] border-gray-300 focus:outline-[#635fc7] hover:bg-[#635fc7] hover:text-[white] outline-none"
           >
-            Create Project
+            {initialData ? "Edit Project" : "Create Project"}
           </button>
         </form>
       </div>
