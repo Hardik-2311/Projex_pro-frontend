@@ -7,7 +7,7 @@ import {
   createGoalAsync,
   editGoalAsync,
 } from "../Features/goalSlice";
-import {RiDeleteBin5Line} from "react-icons/ri"
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import GoalModal from "../Modals/GoalModal";
 import Modal from "../Components/Modal";
@@ -26,6 +26,7 @@ const DraggableGoal = ({ goal, onEditClick, onDelete }) => {
     <div
       ref={drag}
       className="w-[280px] bg-white dark:bg-[#2b2c37] shadow-[#364e7e1a] rounded-lg mx-auto my-4 py-6 px-3 shadow-lg cursor-pointer"
+      onClick={onEditClick}
     >
       <li>
         <div className="flex items-center justify-between">
@@ -36,8 +37,14 @@ const DraggableGoal = ({ goal, onEditClick, onDelete }) => {
             {goal.task_id}
           </div>
           <div className="flex items-center">
-            <MdModeEdit className="cursor-pointer mr-2 dark:text-white hover:dark:text-[#635FC7]" onClick={onEditClick} />
-            <RiDeleteBin5Line className="cursor-pointer dark:text-white hover:dark:text-[#635FC7]" onClick={onDelete} />
+            <MdModeEdit
+              className="cursor-pointer mr-2 dark:text-white hover:dark:text-[#635FC7]"
+              onClick={onEditClick}
+            />
+            <RiDeleteBin5Line
+              className="cursor-pointer dark:text-white hover:dark:text-[#635FC7]"
+              onClick={onDelete}
+            />
           </div>
         </div>
       </li>
@@ -61,7 +68,6 @@ function GoalList(props) {
   };
 
   const [{ isOver }, drop] = useDrop({
-
     accept: "GOAL",
     drop: (item) => handleDroppedGoal(item.goal, props.taskId),
     collect: (monitor) => ({
@@ -84,9 +90,9 @@ function GoalList(props) {
   const handleGoalDelete = (goalId) => {
     dispatch(deleteGoalAsync(goalId));
   };
-  const handlegoaladdwithourform =()=>{
-    setSelectedGoal(null)
-  }
+  const handlegoaladdwithourform = () => {
+    setSelectedGoal(null);
+  };
   const handleGoalEditClick = (goal) => {
     setSelectedGoal(goal);
     setIsGoalModalOpen(true);
@@ -97,10 +103,10 @@ function GoalList(props) {
       dispatch(fetchGoalsAsync());
     }
   }, [status, dispatch]);
-// Filter goals for the current task
-const taskGoals = goals.filter((goal) => props.taskId === goal.task_id);
+  // Filter goals for the current task
+  const taskGoals = goals.filter((goal) => props.taskId === goal.task_id);
   return (
-    <div className="flex flex-col items-center "ref={drop}>
+    <div className="flex flex-col items-center " ref={drop}>
       <div>
         <ul className="flex flex-col" ref={drop}>
           {taskGoals.map((goal) => (
@@ -114,10 +120,13 @@ const taskGoals = goals.filter((goal) => props.taskId === goal.task_id);
         </ul>
       </div>
       <div>
-        <button className="button mb-4 bg-white text-[#653fc7] dark:bg-[#635FC7] dark:text-white " onClick={()=>{
-          setIsGoalModalOpen(true)
-          handlegoaladdwithourform()
-        }}>
+        <button
+          className="button mb-4 bg-white text-[#653fc7] dark:bg-[#635FC7] dark:text-white "
+          onClick={() => {
+            setIsGoalModalOpen(true);
+            handlegoaladdwithourform();
+          }}
+        >
           Add Goal
         </button>
       </div>

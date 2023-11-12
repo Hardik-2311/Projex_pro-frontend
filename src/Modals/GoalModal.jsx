@@ -53,10 +53,10 @@ function GoalModal({
         isOpen
           ? "opacity-100 backdrop-blur-md"
           : "opacity-0 pointer-events-none"
-      } transition-opacity duration-300 scrollbar-hide  `}
+      } transition-opacity duration-300 scrollbar-hide  overflow-y-scroll `}
     >
       <div
-        className=" overflow-y-scroll scrollbar-hide max-h-[95vh]  my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
+        className=" overflow-y-scroll scrollbar-hide  my-auto  bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold
        shadow-md shadow-[#364e7e1a] max-w-md mx-auto  w-full px-8  py-8 rounded-xl"
       >
         <div className="flex flex-row justify-around items-baseline">
@@ -69,7 +69,7 @@ function GoalModal({
             <button
               type="button"
               onClick={onClose}
-              className=" button mt-4 text-white hover:text-gray-700"
+              className=" button mt-4 text-white"
             >
               Close
             </button>
@@ -109,6 +109,7 @@ function GoalModal({
               Creator:
             </label>
             <input
+            readOnly
               required
               type="text"
               name="creator"
