@@ -54,6 +54,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
               Task Name:
             </label>
             <input
+            required
               type="text"
               name="Task_name"
               value={formData.Task_name}
@@ -67,6 +68,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
               Description:
             </label>
             <textarea
+            required
               name="description"
               value={formData.description}
               onChange={handleInputChange}
@@ -79,6 +81,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
               Creator:
             </label>
             <input
+            required
               type="text"
               name="creator"
               value={formData.creator}
@@ -92,6 +95,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
               Project:
             </label>
             <input
+            required
               type="text"
               name="project"
               value={formData.project}

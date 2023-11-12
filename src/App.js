@@ -8,7 +8,7 @@ import MainPage from "./Components/mainpage";
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-w-max">
+      <div >
         <Routes>
           <Route path="" element={<LoginPage />} />
           <Route path="users/" element={<UserPage />} />

@@ -80,6 +80,7 @@ function GoalModal({
               Title:
             </label>
             <input
+            required
               type="text"
               name="title"
               value={formData.title}
@@ -93,6 +94,7 @@ function GoalModal({
               Description:
             </label>
             <textarea
+            required
               name="description"
               value={formData.description}
               onChange={handleInputChange}
@@ -105,6 +107,7 @@ function GoalModal({
               Creator:
             </label>
             <input
+            required
               type="text"
               name="creator"
               value={formData.creator}
@@ -118,6 +121,7 @@ function GoalModal({
               Due Date:
             </label>
             <input
+            required
               type="date"
               name="due_date"
               value={formData.due_date}

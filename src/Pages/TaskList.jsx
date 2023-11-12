@@ -6,15 +6,18 @@ import {
   deleteTaskAsync,
   createTaskAsync,
 } from "../Features/taskSlice";
+import CircleIcon from "../Components/Circles";
+// import ProjectIcon from "../Components/Icons";
+import {RiDeleteBin5Line} from "react-icons/ri"
 import Modal from "../Components/Modal";
 import { fetchUsersAsync } from "../Features/userSlice";
-import { MdDelete } from "react-icons/md";
 import TaskModal from "../Modals/TaskModal";
 function TaskList(props) {
   const projectId = props.projectId;
   const dispatch = useDispatch();
   const statususer = useSelector((state) => state.user.status);
   const User_login=useSelector((state)=>state.singleuser)
+
   useEffect(() => {
     if (statususer === "idle") {
       dispatch(fetchUsersAsync());
@@ -47,17 +50,18 @@ function TaskList(props) {
   }, [status, dispatch]);
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 ">
       <div>
-        <div>
+        <div className="">
           <ul className="flex flex-row gap-3">
             {tasks.map((task) => {
               return task.project === projectId ? (
-                <div key={task.id}>
-                  <li className="w-[300px] dark:text-white px-3 py-3 dark:bg-[#20212c] gap-3">
+                <div key={task.id} className=" border">
+                  <li className="w-[300px] dark:text-white text-gray-500 px-3 py-3 dark:bg-[#20212c] gap-3">
                     <p className="font-bold text-center uppercase flex items-center justify-around">
+                      <CircleIcon/>
                       {task.Task_name}
-                      <MdDelete
+                      <RiDeleteBin5Line
                         className="cursor-pointer hover:text-[#635FC7] dark:text-white"
                         onClick={(e) => {
                           e.stopPropagation();

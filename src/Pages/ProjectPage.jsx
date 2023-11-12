@@ -9,8 +9,8 @@ import {
   editProjectAsync,
 } from "../Features/projectSlice";
 import { MdEdit } from "react-icons/md";
-import { LuProjector } from "react-icons/lu";
-import { MdDelete } from "react-icons/md";
+import CircleIcon from "../Components/Circles";
+import {RiDeleteBin5Line} from "react-icons/ri"
 import useDarkMode from "../Hooks/useDark";
 import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
@@ -102,9 +102,7 @@ function ProjectPage({ onProjectClick }) {
                     : ""
                 }`}
               >
-                <div>
-                  <LuProjector />
-                </div>
+                <div><CircleIcon/></div>
                 <div
                   className={` text-black dark:text-white font-sub-heading dark:hover:text-[#635fc7] ${
                     selectedProject === project.id
@@ -125,7 +123,7 @@ function ProjectPage({ onProjectClick }) {
                       handleEditProject(project);
                     }}
                   />
-                  <MdDelete
+                  <RiDeleteBin5Line
                     className="hover:text-[#635fc7]"
                     onClick={() => {
                       handleDeleteProject(project.id);
@@ -138,7 +136,7 @@ function ProjectPage({ onProjectClick }) {
         </div>
         <div>
           <button
-            className="hidden md:block py-2 px-3 text-lg font-bold dark:text-white"
+            className="hidden md:block py-2 px-3 text-md border border-gray-700 dark:border-white rounded-full font-bold dark:text-white"
             onClick={openModal}
           >
             + Create New Project
