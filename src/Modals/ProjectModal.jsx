@@ -74,6 +74,7 @@ const ProjectModal = ({
               Project Name:
             </label>
             <input
+            required
               type="text"
               name="project_name"
               value={formData.project_name}
@@ -87,6 +88,7 @@ const ProjectModal = ({
               Creator:
             </label>
             <input
+            required
               type="text"
               name="creator"
               value={formData.creator}
@@ -99,6 +101,7 @@ const ProjectModal = ({
           <div className="mb-4 flex flex-col space-y-2">
             <label className="text-sm dark:text-white">Members:</label>
             <select
+            required
               name="members"
               value={formData.members}
               onChange={handleInputChange}
@@ -121,9 +124,10 @@ const ProjectModal = ({
 
           <div className="mb-4 flex flex-col space-y-1">
             <label className="text-sm dark:text-white text-gray-500">
-              Description:
+              description:
             </label>
             <textarea
+            required
               name="description"
               value={formData.description}
               onChange={handleInputChange}

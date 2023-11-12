@@ -84,7 +84,9 @@ function GoalList(props) {
   const handleGoalDelete = (goalId) => {
     dispatch(deleteGoalAsync(goalId));
   };
-
+  const handlegoaladdwithourform =()=>{
+    setSelectedGoal(null)
+  }
   const handleGoalEditClick = (goal) => {
     setSelectedGoal(goal);
     setIsGoalModalOpen(true);
@@ -112,7 +114,10 @@ const taskGoals = goals.filter((goal) => props.taskId === goal.task_id);
         </ul>
       </div>
       <div>
-        <button className="button mb-4 bg-white text-[#653fc7] dark:bg-[#635FC7] dark:text-white " onClick={() => setIsGoalModalOpen(true)}>
+        <button className="button mb-4 bg-white text-[#653fc7] dark:bg-[#635FC7] dark:text-white " onClick={()=>{
+          setIsGoalModalOpen(true)
+          handlegoaladdwithourform()
+        }}>
           Add Goal
         </button>
       </div>

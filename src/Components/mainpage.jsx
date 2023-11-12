@@ -14,7 +14,7 @@ const MainPage = () => {
       <div className="">
         <Header />
       </div>
-      <div className=" flex flex-row ">
+      <div className=" min-h-screen flex flex-row ">
         <div className="left-panel w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
           <ProjectList onProjectClick={handleProjectClick} />
         </div>

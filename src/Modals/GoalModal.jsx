@@ -11,7 +11,7 @@ function GoalModal({
 }) {
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
+    desc: "",
     creator: creator,
     due_date: "",
     task_id: taskId,
@@ -22,7 +22,7 @@ function GoalModal({
       // If in edit mode, set the form data with the selected goal's data
       setFormData({
         title: selectedGoal.title,
-        description: selectedGoal.description,
+        desc: selectedGoal.desc,
         creator: creator,
         due_date: selectedGoal.due_date,
         task_id: taskId,
@@ -50,7 +50,9 @@ function GoalModal({
   return (
     <div
       className={`fixed inset-0 z-50 ${
-        isOpen ? "opacity-100 backdrop-blur-md" : "opacity-0 pointer-events-none"
+        isOpen
+          ? "opacity-100 backdrop-blur-md"
+          : "opacity-0 pointer-events-none"
       } transition-opacity duration-300 scrollbar-hide  `}
     >
       <div
@@ -80,7 +82,7 @@ function GoalModal({
               Title:
             </label>
             <input
-            required
+              required
               type="text"
               name="title"
               value={formData.title}
@@ -91,12 +93,12 @@ function GoalModal({
 
           <div className=" mb-4 flex flex-col space-y-1">
             <label className=" text-sm dark:text-white text-gray-500">
-              Description:
+              desc:
             </label>
             <textarea
-            required
-              name="description"
-              value={formData.description}
+              required
+              name="desc"
+              value={formData.desc}
               onChange={handleInputChange}
               className=" bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
             />
@@ -107,7 +109,7 @@ function GoalModal({
               Creator:
             </label>
             <input
-            required
+              required
               type="text"
               name="creator"
               value={formData.creator}
@@ -121,7 +123,7 @@ function GoalModal({
               Due Date:
             </label>
             <input
-            required
+              required
               type="date"
               name="due_date"
               value={formData.due_date}
@@ -131,13 +133,13 @@ function GoalModal({
           </div>
 
           <div className="flex justify-center items-center">
-          <button
-            type="button"
-            onClick={handleGoalCreate}
-            className="text-black dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0   border-[1px] border-gray-300 focus:outline-[#635fc7] dark:hover:bg-[#635fc7] dark:hover:text-[white] outline-none"
-          >
-            {selectedGoal ? "Edit Goal" : "Add Goal"}
-          </button>
+            <button
+              type="button"
+              onClick={handleGoalCreate}
+              className="text-black dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0   border-[1px] border-gray-300 focus:outline-[#635fc7] dark:hover:bg-[#635fc7] dark:hover:text-[white] outline-none"
+            >
+              {selectedGoal ? "Edit Goal" : "Add Goal"}
+            </button>
           </div>
         </form>
       </div>
