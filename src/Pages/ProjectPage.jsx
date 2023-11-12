@@ -100,7 +100,7 @@ function ProjectPage({ onProjectClick }) {
                 }}
                 className={`text-xl flex flex-row space-y-6 justify-between items-baseline w-full gap-4 font-bold cursor-pointer ${
                   selectedProject === project.id
-                    ? "dark:text-white text-black "
+                    ? "dark:text-white text-black underline "
                     : ""
                 }`}
               >
