@@ -16,7 +16,7 @@ import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
 import ProjectModal from "../Modals/ProjectModal";
-import CheckLogin from "../Login_user/LoginUser";
+import {useCheckLogin} from "../Login_user/LoginUser";
 function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
@@ -46,13 +46,9 @@ function ProjectPage({ onProjectClick }) {
     console.log(formData);
     dispatch(createProjectAsync(formData));
   };
-  const loginUser = async () => {
-    await CheckLogin();
-  };
-  // here is the biggest mistake will do it later
-  loginUser();
-
+  useCheckLogin()
   useEffect(() => {
+
     if (status === "idle") {
       dispatch(fetchProjectsAsync());
     }
