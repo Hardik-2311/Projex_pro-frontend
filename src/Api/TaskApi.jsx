@@ -11,18 +11,20 @@ export const fetchTasksApi = () => {
 
 export const createTaskApi = (newTask) => {
   try {
-    
+    toast.success("task created successfully");
     return axios.post("http://127.0.0.1:8000/tasks/", newTask, axiosConfig);
   } catch (error) {
-    toast.error("error in creating the task")
+    toast.error("error in creating the task");
   }
 };
 
 export const deleteTaskApi = (taskId) => {
+  toast.success("task deleted successfully");
   return axios.delete(`http://127.0.0.1:8000/tasks/${taskId}/`, axiosConfig);
 };
 
 export const editTaskApi = (taskId, newData) => {
+  toast.success("task editedd successfully");
   return axios.put(
     `http://127.0.0.1:8000/tasks/${taskId}/`,
     newData,
