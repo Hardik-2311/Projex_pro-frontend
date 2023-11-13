@@ -26,15 +26,16 @@ const DraggableGoal = ({ goal, onEditClick, onDelete }) => {
     <div
       ref={drag}
       className="w-[280px] bg-white dark:bg-[#2b2c37] shadow-[#364e7e1a] rounded-lg mx-auto my-4 py-6 px-3 shadow-lg cursor-pointer"
-      onClick={onEditClick}
     >
       <li>
-        <div className="flex items-center justify-between">
-          <div className="text-black text-xl dark:text-white font-bold">
-            {goal.title}
-          </div>
-          <div className="text-black text-xl dark:text-white font-bold">
-            {goal.task_id}
+        <div className="flex items-center justify-around">
+          <div onClick={onEditClick} className="w-full h-full">
+            <div className="text-black text-xl dark:text-white font-bold uppercase font-sub-heading">
+              {goal.title}
+            </div>
+            <div className="text-black text-lg dark:text-white  font-sub-heading">
+              {goal.desc}
+            </div>
           </div>
           <div className="flex items-center">
             <MdModeEdit
