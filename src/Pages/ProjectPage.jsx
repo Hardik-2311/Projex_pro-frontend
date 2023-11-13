@@ -10,13 +10,13 @@ import {
 } from "../Features/projectSlice";
 import { MdEdit } from "react-icons/md";
 import CircleIcon from "../Components/Circles";
-import {RiDeleteBin5Line} from "react-icons/ri"
+import { RiDeleteBin5Line } from "react-icons/ri";
 import useDarkMode from "../Hooks/useDark";
 import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
 import ProjectModal from "../Modals/ProjectModal";
-import CheckLogin from "../SingleUser/singleuser";
+import CheckLogin from "../Login_user/LoginUser";
 function ProjectPage({ onProjectClick }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
@@ -45,13 +45,12 @@ function ProjectPage({ onProjectClick }) {
   const handleCreateProject = (formData) => {
     console.log(formData);
     dispatch(createProjectAsync(formData));
-    toast.success("Project is created");
   };
   const loginUser = async () => {
     await CheckLogin();
   };
-// here is the biggest mistake will do it later
-   loginUser()
+  // here is the biggest mistake will do it later
+  loginUser();
 
   useEffect(() => {
     if (status === "idle") {
@@ -74,9 +73,9 @@ function ProjectPage({ onProjectClick }) {
     setEditingProject(project);
     openModal();
   };
-  const handleCreatewithFormdata=()=>{
-      setEditingProject(null)
-  }
+  const handleCreatewithFormdata = () => {
+    setEditingProject(null);
+  };
   const handleUpdateProject = (formData) => {
     dispatch(
       editProjectAsync({ projectId: editingProject.id, newData: formData })
@@ -84,7 +83,7 @@ function ProjectPage({ onProjectClick }) {
     closeModal();
   };
   return (
-    <div className="">
+    <div className="w-[230px]">
       <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
         ALL Projects {projects.length}
       </h3>
@@ -104,12 +103,12 @@ function ProjectPage({ onProjectClick }) {
                     : ""
                 }`}
               >
-                <div><CircleIcon/></div>
+                <div>
+                  <CircleIcon />
+                </div>
                 <div
                   className={` text-black dark:text-white font-sub-heading dark:hover:text-[#635fc7] ${
-                    selectedProject === project.id
-                      ? "font-heading"
-                      : ""
+                    selectedProject === project.id ? "font-heading" : ""
                   }`}
                   onClick={() => {
                     setSelectedProject(project.id);
@@ -136,12 +135,12 @@ function ProjectPage({ onProjectClick }) {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="w-full flex justify-center items-center">
           <button
             className="hidden md:block py-2 px-3 text-md border border-gray-700 dark:border-white rounded-full font-bold dark:text-white"
-            onClick={()=>{
-              openModal()
-              handleCreatewithFormdata()
+            onClick={() => {
+              openModal();
+              handleCreatewithFormdata();
             }}
           >
             + Create New Project
@@ -165,7 +164,7 @@ function ProjectPage({ onProjectClick }) {
               } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
-          <BsFillMoonFill className="dark:text-white"/>
+          <BsFillMoonFill className="dark:text-white" />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ProjectModal
