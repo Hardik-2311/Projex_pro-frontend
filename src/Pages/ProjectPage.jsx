@@ -1,7 +1,6 @@
 // ProjectPage.jsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
 import {
   fetchProjectsAsync,
   deleteProjectAsync,
@@ -16,8 +15,8 @@ import { Switch } from "@headlessui/react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import Modal from "../Components/Modal";
 import ProjectModal from "../Modals/ProjectModal";
-import {useCheckLogin} from "../Login_user/LoginUser";
-function ProjectPage({ onProjectClick }) {
+import { useCheckLogin } from "../Login_user/LoginUser";
+function ProjectPage({ onProjectClick, onProjectDelete }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.data);
   const status = useSelector((state) => state.project.status);
@@ -46,21 +45,16 @@ function ProjectPage({ onProjectClick }) {
     console.log(formData);
     dispatch(createProjectAsync(formData));
   };
-  useCheckLogin()
+  useCheckLogin();
   useEffect(() => {
-
     if (status === "idle") {
       dispatch(fetchProjectsAsync());
     }
   }, [status, dispatch]);
 
   const handleDeleteProject = async (projectId) => {
-    try {
-      await dispatch(deleteProjectAsync(projectId));
-      toast.success("Project is deleted");
-    } catch (e) {
-      toast.error(e);
-    }
+    await dispatch(deleteProjectAsync(projectId));
+    onProjectDelete();
   };
 
   const [editingProject, setEditingProject] = useState(null);

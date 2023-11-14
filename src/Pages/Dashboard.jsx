@@ -1,15 +1,15 @@
 import React from "react";
-import { useEffect } from "react";
-import { fetchUsersAsync } from "../Features/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+// import { useEffect } from "react";
+// import { fetchUsersAsync } from "../Features/userSlice";
+// import { useSelector, useDispatch } from "react-redux";
 const Dashboard = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.user.data);
-  console.log(user)
-  useEffect(() => {
-    dispatch(fetchUsersAsync());
-  }, [dispatch]);
+  // const user = useSelector((state) => state.user.data);
+  // // console.log(user)
+  // useEffect(() => {
+  //   dispatch(fetchUsersAsync());
+  // }, [dispatch]);
   return (
     <div className="flex justify-center items-center">
       <div className="text-3xl dark:text-white">
