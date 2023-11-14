@@ -99,7 +99,7 @@ const ProjectModal = ({
           </div>
 
           <div className="mb-4 flex flex-col space-y-2">
-            <label className="text-sm dark:text-white">Members:</label>
+            <label className="text-sm dark:bg-[#2b2c37] dark:text-white">Members:</label>
             <select
             required
               name="members"
