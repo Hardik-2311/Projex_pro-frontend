@@ -20,11 +20,9 @@ const Dashboard = () => {
         )}
       </div>
       <div className="text-2xl dark:text-white flex flex-col">
-        {
-          users.map((user)=>{
-            return user.name
-          })
-        }
+        {users.map((user) => {
+          return <div>{user.name}</div>;
+        })}
       </div>
     </div>
   );
