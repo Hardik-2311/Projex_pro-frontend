@@ -19,7 +19,7 @@ const Dashboard = () => {
           <h3>hello click on project to view details</h3>
         )}
       </div>
-      <div className="text-3xl dark:text-white">
+      <div className="text-2xl dark:text-white">
         {users.map((user) => {
           return <div>{user.name}</div>;
         })}
