@@ -17,7 +17,7 @@ const Header = () => {
             <img src={Logo} alt="" className="w-[50px] h-[50px]" />
           </div>
         </div> */}
-        <div className="text-2xl font-bold text-black dark:text-white hidden md:block">
+        <div className="text-2xl font-bold text-black dark:text-white">
           Platform Launch
           <span className="text-purple-500"></span>
         </div>

@@ -14,12 +14,12 @@ const MainPage = () => {
     setSelectedProject(null);
   };
   return (
-    <div className="flex flex-col overflow-scroll scrollbar-hide">
+    <div className="flex flex-col min-w-max overflow-scroll bg-[#E9EFFA] dark:bg-[#20212c] scrollbar-hide">
       <div className="">
         <Header />
       </div>
       <div className=" min-h-screen flex flex-row ">
-        <div className="left-panel w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
+        <div className="left-panel w-[1/3.5] justify-center  dark:bg-[#2b2c37] bg-white ">
           {
             <ProjectList
               onProjectClick={handleProjectClick}
@@ -27,7 +27,7 @@ const MainPage = () => {
             />
           }
         </div>
-        <div className="right-panel dark:bg-[#20212c] bg-[#E9EFFA] min-w-max w-[100vw]">
+        <div className="right-panel dark:bg-[#20212c] bg-[#E9EFFA] min-w-[100vh] w-2/3">
           {selectedProject === null ? (
             <Dashboard />
           ) : (

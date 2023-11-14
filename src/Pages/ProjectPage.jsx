@@ -42,7 +42,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
   };
 
   const handleCreateProject = (formData) => {
-    console.log(formData);
+    // console.log(formData);
     dispatch(createProjectAsync(formData));
   };
   useCheckLogin();
@@ -164,7 +164,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
             }
             onClose={closeModal}
             initialData={editingProject}
-            creator={User_login.name}
+            creator={User_login.username}
             users={users}
           />
         </Modal>

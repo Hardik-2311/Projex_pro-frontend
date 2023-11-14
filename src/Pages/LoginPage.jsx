@@ -27,10 +27,10 @@ const LoginPage = () => {
           <div className="rounded-md flex shadow-3xl py-10">
             <div>
               <div className="flex flex-col justify-center items-center">
-                <img src={club} width={64} height={64} alt="img"  />
+                <img src={club} width={70} height={70} alt="img"  />
                 <div className="flex flex-col items-start p-2 m-5">
                   <div className="text-2xl font-bold  text-black dark:text-white">
-                    Welcome
+                    Avenger's Assemble
                   </div>
                 </div>
                 <button
@@ -57,7 +57,7 @@ const LoginPage = () => {
                 <span
                   className={`${
                     darkMode ? "translate-x-6" : "translate-x-1"
-                  } inline-block h-4 w-4 transform rounded-full bg-slate-500 transition`}
+                  } inline-block h-4 w-4 transform rounded-full bg-black dark:bg-white transition`}
                 />
               </Switch>
               <BsFillMoonFill className="dark:text-white text-black" />
