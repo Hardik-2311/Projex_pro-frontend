@@ -7,6 +7,8 @@ import {
   createProjectAsync,
   editProjectAsync,
 } from "../Features/projectSlice";
+import hide from "../assets/hide.svg";
+import show from "../assets/show.svg";
 import { MdEdit } from "react-icons/md";
 import CircleIcon from "../Components/Circles";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -25,6 +27,10 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
   );
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+  const toggleSidebar = () => {
+    setIsSideBarOpen((curr) => !curr);
+  };
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const users = useSelector((state) => state.user.data);
@@ -73,102 +79,122 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
     closeModal();
   };
   return (
-    <div className="w-[230px]">
-      <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
-        ALL Projects {projects.length}
-      </h3>
-      <div className="flex flex-col items-start p-4 gap-4 ">
-        <div className="">
-          <ul className="flex flex-col space-y-3 items-center">
-            {projects.map((project) => (
-              <li
-                key={project.id}
+    <div>
+      {isSideBarOpen && (
+        <div className="w-[230px]">
+          <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">
+            ALL Projects {projects.length}
+          </h3>
+          <div className="flex flex-col mt-4 items-center gap-4 ">
+            <div className="w-full">
+              <ul className="flex flex-col  items-center">
+                {projects.map((project) => (
+                  <li
+                    key={project.id}
+                    onClick={() => {
+                      setSelectedProject(project.id);
+                      onProjectClick(project.id);
+                    }}
+                    className={`text-xl flex-row py-3  justify-around w-full gap-4 font-bold className="text-black dark:text-white font-sub-heading flex items-center dark:hover:text-[#635fc7]"
                 onClick={() => {
                   setSelectedProject(project.id);
-                  onProjectClick(project.id);
-                }}
-                className={`text-xl flex flex-row space-y-6 justify-between items-baseline w-full gap-4 font-bold cursor-pointer ${
+                }} cursor-pointer ${
                   selectedProject === project.id
-                    ? "dark:text-white text-black underline "
+                    ? "text-white bg-[#635fc7] rounded-r-full "
                     : ""
                 }`}
+                  >
+                    <CircleIcon />
+                    {project.project_name}
+
+                    <div className="flex justify-center items-center">
+                      <MdEdit
+                        className=""
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditProject(project);
+                        }}
+                      />
+                      <RiDeleteBin5Line
+                        className=""
+                        onClick={() => {
+                          handleDeleteProject(project.id);
+                        }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="w-full flex justify-center items-center">
+              <button
+                className="hidden md:block py-2 px-3 text-md border border-gray-700 dark:border-white rounded-full font-bold dark:text-white"
+                onClick={() => {
+                  openModal();
+                  handleCreatewithFormdata();
+                }}
               >
-                <div>
-                  <CircleIcon />
-                </div>
-                <div
-                  className={` text-black dark:text-white font-sub-heading dark:hover:text-[#635fc7] ${
-                    selectedProject === project.id ? "font-heading" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedProject(project.id);
-                  }}
-                >
-                  {project.project_name}
-                </div>{" "}
-                <div className="flex">
-                  <MdEdit
-                    className="hover:text-[#635fc7]"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditProject(project);
-                    }}
-                  />
-                  <RiDeleteBin5Line
-                    className="hover:text-[#635fc7]"
-                    onClick={() => {
-                      handleDeleteProject(project.id);
-                    }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+                + Create New Project
+              </button>
+              <button
+                onClick={openModal}
+                className="button py-1 px-3 md:hidden"
+              >
+                +
+              </button>
+            </div>
+            <div className="p-4 w-[90%] mx-auto justify-center relative space-x-2  bg-slate-100 dark:bg-[#20212c] flex  items-center rounded-lg">
+              <BsFillSunFill className="dark:text-white" />
+              <Switch
+                checked={darkSide}
+                onChange={toggleDarkMode}
+                className={`${
+                  darkSide ? "bg-[#635fc7] " : "bg-gray-200"
+                } relative inline-flex h-6 w-11 items-center rounded-full`}
+              >
+                <span
+                  className={`${
+                    darkSide ? "translate-x-6" : "translate-x-1"
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                />
+              </Switch>
+              <BsFillMoonFill className="dark:text-white" />
+            </div>
+
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+              <ProjectModal
+                isOpen={isModalOpen}
+                onSubmit={
+                  editingProject ? handleUpdateProject : handleCreateProject
+                }
+                onClose={closeModal}
+                initialData={editingProject}
+                creator={User_login.username}
+                users={users}
+              />
+            </Modal>
+          </div>
         </div>
-        <div className="w-full flex justify-center items-center">
-          <button
-            className="hidden md:block py-2 px-3 text-md border border-gray-700 dark:border-white rounded-full font-bold dark:text-white"
-            onClick={() => {
-              openModal();
-              handleCreatewithFormdata();
-            }}
-          >
-            + Create New Project
-          </button>
-          <button onClick={openModal} className="button py-1 px-3 md:hidden">
-            +
-          </button>
+      )}
+      {isSideBarOpen ? (
+        <div
+          onClick={() => toggleSidebar()}
+          className=" flex  items-center absolute  bottom-16  text-lg font-bold  rounded-r-full hover:text-[#635FC7] cursor-pointer mr-6 mb-8 px-8 py-4 hover:bg-[#635fc71a] dark:hover:bg-white  space-x-2 justify-center  my-4 text-gray-500 "
+        >
+          <img className=" min-w-[20px]" src={hide} alt=" side bar show/hide" />
+          {isSideBarOpen && <p> Hide Sidebar </p>}
         </div>
-        <div className="p-4 w-full justify-center relative space-x-2 bg-slate-100 dark:bg-[#20212c] flex  items-center rounded-lg">
-          <BsFillSunFill className="dark:text-white" />
-          <Switch
-            checked={darkSide}
-            onChange={toggleDarkMode}
-            className={`${
-              darkSide ? "bg-[#635fc7] " : "bg-gray-200"
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
-          >
-            <span
-              className={`${
-                darkSide ? "translate-x-6" : "translate-x-1"
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-            />
-          </Switch>
-          <BsFillMoonFill className="dark:text-white" />
+      ) : (
+        <div
+          className="flex flex-row h-full justify-center items-center gap-[2rem] "
+          onClick={() => toggleSidebar()}
+        >
+          <div className=" flex justify between text-lg font-bold hover:text-[#635FC7] cursor-pointer mr-6 mb-8 px-8 py-4 hover:bg-[#635fc71a] dark:hover:bg-white text-gray-500 rounded-r-full my-4  ">
+            {/* <img src={show} alt="showSidebarIcon" w={24} h={24} /> */}
+            Show Projects
+          </div>
         </div>
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <ProjectModal
-            isOpen={isModalOpen}
-            onSubmit={
-              editingProject ? handleUpdateProject : handleCreateProject
-            }
-            onClose={closeModal}
-            initialData={editingProject}
-            creator={User_login.username}
-            users={users}
-          />
-        </Modal>
-      </div>
+      )}
     </div>
   );
 }
