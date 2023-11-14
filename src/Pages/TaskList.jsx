@@ -71,7 +71,7 @@ function TaskList(props) {
                     </p>
                   </li>
                   <div className="mt-2">
-                    <GoalList taskId={task.id} creator={User_login.name} />
+                    <GoalList taskId={task.id} creator={User_login.username} />
                   </div>
                 </div>
               ) : (
@@ -99,7 +99,7 @@ function TaskList(props) {
           onClose={() => setIsTaskModalOpen(false)}
           onTaskCreate={handleTaskCreate}
           project={projectId}
-          creator={User_login.name}
+          creator={User_login.username}
         />
       </Modal>
     </div>

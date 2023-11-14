@@ -21,7 +21,5 @@ export const deleteGoalApi = (goalId) => {
 };
 
 export const editGoalApi = (newData,goalId) => {
-  console.log(goalId)
-  toast.success("goal edited successfully")
   return axios.put(`http://127.0.0.1:8000/goals/${goalId}/`, newData, axiosConfig);
 };
