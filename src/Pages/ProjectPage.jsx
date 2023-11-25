@@ -8,7 +8,6 @@ import {
   editProjectAsync,
 } from "../Features/projectSlice";
 import hide from "../assets/hide.svg";
-import show from "../assets/show.svg";
 import { MdEdit } from "react-icons/md";
 import CircleIcon from "../Components/Circles";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -87,7 +86,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
           </h3>
           <div className="flex flex-col mt-4 items-center gap-4 ">
             <div className="w-full">
-              <ul className="flex flex-col  items-center">
+              <ul className="flex flex-col items-center">
                 {projects.map((project) => (
                   <li
                     key={project.id}
@@ -95,7 +94,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
                       setSelectedProject(project.id);
                       onProjectClick(project.id);
                     }}
-                    className={`text-xl flex-row py-3  justify-around w-full gap-4 font-bold className="text-black dark:text-white font-sub-heading flex items-center dark:hover:text-[#635fc7]"
+                    className={`text-xl flex-row py-3  justify-between p-4 w-full gap-4 font-bold className="text-black dark:text-white font-sub-heading flex items-center dark:hover:text-[#635fc7]"
                 onClick={() => {
                   setSelectedProject(project.id);
                 }} cursor-pointer ${
@@ -182,7 +181,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
       {isSideBarOpen ? (
         <div
           onClick={() => toggleSidebar()}
-          className=" flex  items-center absolute  bottom-16  text-lg font-bold  rounded-r-full hover:text-[#635FC7] cursor-pointer mr-6 mb-8 px-8 py-4 hover:bg-[#635fc71a] dark:hover:bg-white  space-x-2 justify-center  my-4 text-gray-500 "
+          className=" flex  items-center  bottom-16  text-lg font-bold  rounded-r-full hover:text-[#635FC7] cursor-pointer mr-6 mb-8 px-8 py-4 hover:bg-[#635fc71a] dark:hover:bg-white  space-x-2 justify-center  my-4 text-gray-500 "
         >
           <img className=" min-w-[20px]" src={hide} alt=" side bar show/hide" />
           {isSideBarOpen && <p> Hide Sidebar </p>}
