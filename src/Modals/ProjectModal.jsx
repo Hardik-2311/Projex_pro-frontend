@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const ProjectModal = ({
   isOpen,
   onClose,
@@ -10,7 +10,7 @@ const ProjectModal = ({
   const [formData, setFormData] = useState({
     project_name: "",
     creator: creator,
-    members: "",
+    members: [],
     description: "",
   });
   useEffect(() => {
@@ -19,11 +19,11 @@ const ProjectModal = ({
         // editing dtata
         setFormData(initialData);
       } else {
-      //  new create data
+        //  new create data
         setFormData({
           project_name: "",
           creator: creator,
-          members: "",
+          members: [],
           description: "",
         });
       }
@@ -31,7 +31,19 @@ const ProjectModal = ({
   }, [isOpen, initialData, creator]);
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "members") {
+      // If the field is 'members', convert the selected option to an array
+      const selectedMembers = Array.from(
+        e.target.selectedOptions,
+        (option) => option.value
+      );
+      setFormData({ ...formData, [name]: selectedMembers });
+    } else {
+      // For other fields, update the value as usual
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -74,7 +86,7 @@ const ProjectModal = ({
               Project Name:
             </label>
             <input
-            required
+              required
               type="text"
               name="project_name"
               value={formData.project_name}
@@ -88,7 +100,7 @@ const ProjectModal = ({
               Creator:
             </label>
             <input
-            required
+              required
               type="text"
               name="creator"
               value={formData.creator}
@@ -99,9 +111,11 @@ const ProjectModal = ({
           </div>
 
           <div className="mb-4 flex flex-col space-y-2">
-            <label className="text-sm dark:bg-[#2b2c37] dark:text-white">Members:</label>
+            <label className="text-sm dark:bg-[#2b2c37] dark:text-white">
+              Members:
+            </label>
             <select
-            required
+              required
               name="members"
               value={formData.members}
               onChange={handleInputChange}
@@ -127,7 +141,7 @@ const ProjectModal = ({
               description:
             </label>
             <textarea
-            required
+              required
               name="description"
               value={formData.description}
               onChange={handleInputChange}
