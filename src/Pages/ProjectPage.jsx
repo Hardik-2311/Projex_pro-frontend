@@ -137,7 +137,10 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
                 + Create New Project
               </button>
               <button
-                onClick={openModal}
+                onClick={()=>{
+                  openModal();
+                  handleCreatewithFormdata();
+                }}
                 className="button py-1 px-3 md:hidden"
               >
                 +
