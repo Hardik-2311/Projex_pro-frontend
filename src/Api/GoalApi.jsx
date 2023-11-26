@@ -1,6 +1,5 @@
 // api/goalApi.js
 import axios from "axios";
-import toast from "react-hot-toast";
 const axiosConfig = {
   withCredentials: true,
 };
@@ -10,13 +9,11 @@ export const fetchGoalsApi = () => {
 };
 
 export const createGoalApi = (newGoal) => {
-  toast.success("goal created successfully")
   return axios.post("http://127.0.0.1:8000/goals/", newGoal, axiosConfig);
  
 };
 
 export const deleteGoalApi = (goalId) => {
-  toast.success("goal deleted successfully")
   return axios.delete(`http://127.0.0.1:8000/goals/${goalId}/`, axiosConfig);
 };
 

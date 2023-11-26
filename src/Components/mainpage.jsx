@@ -14,12 +14,12 @@ const MainPage = () => {
     setSelectedProject(null);
   };
   return (
-    <div className="flex flex-col min-w-max overflow-scroll bg-[#E9EFFA] dark:bg-[#20212c] scrollbar-hide">
+    <div className="flex flex-col bg-[#E9EFFA] dark:bg-[#20212c] ">
       <div className="">
         <Header />
       </div>
-      <div className=" min-h-screen flex flex-row ">
-        <div className="left-panel w-[1/3.5] justify-center  dark:bg-[#2b2c37] bg-white ">
+      <div className="min-h-screen flex flex-row overflow-x-scroll">
+        <div className="left-panel h-screen overflow-y-sroll w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
           {
             <ProjectList
               onProjectClick={handleProjectClick}

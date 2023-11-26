@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const ProjectModal = ({
   isOpen,
   onClose,
@@ -10,20 +10,18 @@ const ProjectModal = ({
   const [formData, setFormData] = useState({
     project_name: "",
     creator: creator,
-    members: "",
+    members: [],
     description: "",
   });
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
-        // editing dtata
         setFormData(initialData);
       } else {
-      //  new create data
         setFormData({
           project_name: "",
           creator: creator,
-          members: "",
+          members: [],
           description: "",
         });
       }
@@ -31,7 +29,11 @@ const ProjectModal = ({
   }, [isOpen, initialData, creator]);
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -41,7 +43,7 @@ const ProjectModal = ({
   };
   return (
     <div
-      className={`fixed inset-0 z-50 ${
+      className={`fixed inset-0 z-50 flex justify-center items-center ${
         isOpen
           ? "opacity-100 backdrop-blur-md"
           : "opacity-0 pointer-events-none"
@@ -74,7 +76,7 @@ const ProjectModal = ({
               Project Name:
             </label>
             <input
-            required
+              required
               type="text"
               name="project_name"
               value={formData.project_name}
@@ -88,7 +90,7 @@ const ProjectModal = ({
               Creator:
             </label>
             <input
-            required
+              required
               type="text"
               name="creator"
               value={formData.creator}
@@ -99,23 +101,20 @@ const ProjectModal = ({
           </div>
 
           <div className="mb-4 flex flex-col space-y-2">
-            <label className="text-sm dark:bg-[#2b2c37] dark:text-white">Members:</label>
+            <label className="text-sm dark:text-white text-gray-500">
+              Select User:
+            </label>
             <select
-            required
-              name="members"
+              name="members" 
               value={formData.members}
               onChange={handleInputChange}
-              className="bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1 ring-0"
+              className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
             >
               <option value="" disabled className="dark:bg-[#2b2c37]">
                 Select a member
               </option>
               {users.map((user) => (
-                <option
-                  key={user.id}
-                  value={user.username}
-                  className="dark:bg-[#2b2c37]"
-                >
+                <option key={user.id} value={user.id}>
                   {user.username}
                 </option>
               ))}
@@ -127,11 +126,11 @@ const ProjectModal = ({
               description:
             </label>
             <textarea
-            required
+              required
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]"
+              className="bg-transparent outline-none min-h-[100px] focus:border-0 px-4 py-2 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]"
             />
           </div>
 

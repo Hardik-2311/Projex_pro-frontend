@@ -78,7 +78,7 @@ function ProjectPage({ onProjectClick, onProjectDelete }) {
     closeModal();
   };
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {isSideBarOpen && (
         <div className="w-[230px]">
           <h3 className="dark:text-white text-gray-600 mx-6 text-xl font-bold mt-4">

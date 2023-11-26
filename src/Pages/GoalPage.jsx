@@ -7,6 +7,7 @@ import {
   createGoalAsync,
   editGoalAsync,
 } from "../Features/goalSlice";
+
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import GoalModal from "../Modals/GoalModal";
@@ -33,9 +34,9 @@ const DraggableGoal = ({ goal, onEditClick, onDelete }) => {
             <div className="text-black text-xl dark:text-white font-bold uppercase font-sub-heading">
               {goal.title}
             </div>
-            <div className="text-black text-lg dark:text-white  font-sub-heading">
+            {/* <div className="text-black text-lg dark:text-white  font-sub-heading">
               {goal.desc}
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center">
             <MdModeEdit

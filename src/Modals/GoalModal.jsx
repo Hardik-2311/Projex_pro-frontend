@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector} from "react-redux";
 
 function GoalModal({
   isOpen,
@@ -8,6 +9,7 @@ function GoalModal({
   selectedGoal,
   taskId,
   creator,
+  assignee,
 }) {
   const [formData, setFormData] = useState({
     title: "",
@@ -15,8 +17,9 @@ function GoalModal({
     creator: creator,
     due_date: "",
     task_id: taskId,
+    assignee:"",
   });
-
+  
   useEffect(() => {
     if (selectedGoal) {
       // If in edit mode, set the form data with the selected goal's data
@@ -26,10 +29,11 @@ function GoalModal({
         creator: creator,
         due_date: selectedGoal.due_date,
         task_id: taskId,
+        assignee:selectedGoal.assignee,
       });
     }
   }, [selectedGoal, creator, taskId]);
-
+  const users = useSelector((state) => state.user.data);
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -46,10 +50,9 @@ function GoalModal({
     }
     onClose();
   };
-
   return (
     <div
-      className={`fixed inset-0 z-50 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center ${
         isOpen
           ? "opacity-100 backdrop-blur-md"
           : "opacity-0 pointer-events-none"
@@ -90,7 +93,6 @@ function GoalModal({
               className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
             />
           </div>
-
           <div className=" mb-4 flex flex-col space-y-1">
             <label className=" text-sm dark:text-white text-gray-500">
               desc:
@@ -100,16 +102,35 @@ function GoalModal({
               name="desc"
               value={formData.desc}
               onChange={handleInputChange}
-              className=" bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
+              className=" bg-transparent outline-none min-h-[100px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
             />
           </div>
-
+          <div className="mb-4 flex flex-col space-y-2">
+            <label className="text-sm dark:text-white text-gray-500">
+              Select User:
+            </label>
+            <select
+              name="assignee"  // Ensure this matches the property you want to update in formData
+              value={formData.assignee}
+              onChange={handleInputChange}
+              className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
+            >
+              <option value="" disabled className="dark:bg-[#2b2c37]">
+                Select a member
+              </option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.username}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="mb-4 flex flex-col space-y-2">
             <label className="text-sm dark:text-white text-gray-500">
               Creator:
             </label>
             <input
-            readOnly
+              readOnly
               required
               type="text"
               name="creator"

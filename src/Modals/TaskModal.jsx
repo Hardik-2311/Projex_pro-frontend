@@ -23,7 +23,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
 
   return (
     <div
-      className={` fixed inset-0 z-50 ${
+      className={` fixed inset-0 z-50 flex justify-center items-center ${
         isOpen
           ? "opacity-100 backdrop-blur-md"
           : "opacity-0 pointer-events-none"
@@ -72,7 +72,7 @@ function TaskModal({ isOpen, onClose, onTaskCreate, creator, project }) {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className=" bg-transparent outline-none min-h-[200px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
+              className=" bg-transparent outline-none min-h-[100px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
             />
           </div>
 
