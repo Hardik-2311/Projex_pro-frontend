@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useSelector} from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchFeedbacksAsync,
+  createFeedbackAsync,
+  deleteFeedbackAsync,
+} from "../Features/feedbackSlice";
+import { RxCross2 } from "react-icons/rx";
 function GoalModal({
   isOpen,
   onClose,
@@ -17,26 +22,37 @@ function GoalModal({
     creator: creator,
     due_date: "",
     task_id: taskId,
-    assignee:"",
+    assignee: "",
   });
-  
+  const [commentData, setcommentData] = useState({
+    content: "",
+    commentor: creator,
+    goal_id: selectedGoal ? selectedGoal.id : null,
+  });
+  const comments = useSelector((state) => state.feedback.data);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (selectedGoal) {
-      // If in edit mode, set the form data with the selected goal's data
       setFormData({
         title: selectedGoal.title,
         desc: selectedGoal.desc,
         creator: creator,
         due_date: selectedGoal.due_date,
         task_id: taskId,
-        assignee:selectedGoal.assignee,
+        assignee: selectedGoal.assignee,
       });
     }
-  }, [selectedGoal, creator, taskId]);
+    dispatch(fetchFeedbacksAsync());
+  }, [selectedGoal, creator, taskId, dispatch]);
   const users = useSelector((state) => state.user.data);
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    setcommentData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -49,6 +65,19 @@ function GoalModal({
       onGoalCreate(formData);
     }
     onClose();
+  };
+  const addComment = () => {
+    dispatch(createFeedbackAsync(commentData));
+    dispatch(fetchFeedbacksAsync());
+    setcommentData({
+      content: "",
+      commentor: creator,
+      goal_id: selectedGoal ? selectedGoal.id : null,
+    });
+  };
+  const handleDeleteComment = (commentId) => {
+    dispatch(deleteFeedbackAsync(commentId));
+    dispatch(fetchFeedbacksAsync());
   };
   return (
     <div
@@ -105,12 +134,52 @@ function GoalModal({
               className=" bg-transparent outline-none min-h-[100px] focus:border-0 px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px] "
             />
           </div>
+          {selectedGoal && (
+            <div>
+              <div className="mb-4 flex flex-col space-y-2">
+                <label className="text-sm dark:text-white text-gray-500">
+                  Content:
+                </label>
+                <input
+                  required
+                  type="text"
+                  name="content"
+                  value={commentData.content}
+                  onChange={handleInputChange}
+                  className="bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
+                />
+              </div>
+              {comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className="flex w-full  bg-white dark:bg-[#20212c] shadow-[#364e7e1a] rounded-full justify-between py-4 px-2 shadow-lg cursor-pointer items-center my-4"
+                >
+                  <div>
+                    <p className="flex-grow mx-4">{comment.content}</p>
+                  </div>
+                  <div>
+                    <RxCross2
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="font-bold mx-4 text-black dark:text-white hover:scale-10"
+                    />
+                  </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addComment}
+                className="text-black dark:text-white flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 mb-4  border-[1px] border-gray-300 focus:outline-[#635fc7] dark:hover:bg-[#635fc7] dark:hover:text-[white] outline-none"
+              >
+                Add Comment
+              </button>
+            </div>
+          )}
           <div className="mb-4 flex flex-col space-y-2">
             <label className="text-sm dark:text-white text-gray-500">
               Select User:
             </label>
             <select
-              name="assignee"  // Ensure this matches the property you want to update in formData
+              name="assignee" // Ensure this matches the property you want to update in formData
               value={formData.assignee}
               onChange={handleInputChange}
               className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
@@ -148,6 +217,7 @@ function GoalModal({
               required
               type="date"
               name="due_date"
+              min={new Date().toISOString().split('T')[0]}
               value={formData.due_date}
               onChange={handleInputChange}
               className="bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0"
