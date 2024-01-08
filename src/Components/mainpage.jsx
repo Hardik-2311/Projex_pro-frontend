@@ -19,7 +19,7 @@ const MainPage = () => {
         <Header />
       </div>
       <div className="min-h-screen flex flex-row overflow-x-scroll">
-        <div className="left-panel h-screen overflow-y-sroll w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
+        <div className="left-panel overflow-y-sroll w-[1/3.5] justify-center dark:bg-[#2b2c37] bg-white ">
           {
             <ProjectList
               onProjectClick={handleProjectClick}
